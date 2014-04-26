@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using GoodPlaceToLive.Data;
 using GoodPlaceToLive.Common;
 using GoodPlaceToLive.Models;
+using GoodPlaceToLive.Pages;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Net.Http;
 
@@ -100,8 +101,16 @@ namespace GoodPlaceToLive
         void Hub_SectionHeaderClick(object sender, HubSectionHeaderClickEventArgs e)
         {
             HubSection section = e.Section;
-            var group = section.DataContext;
-            this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
+            //var group = section.DataContext;
+            //this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
+            switch (e.Section.Name)
+            {
+                case "Hospitals":
+                    this.Frame.Navigate(typeof(HospitalsListPage));
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -118,7 +127,14 @@ namespace GoodPlaceToLive
             //var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
             //this.Frame.Navigate(typeof(ItemPage), itemId);
             var item = ((HospitalAdultItem) e.ClickedItem);
-            item.LoadCustomerData();
+            try
+            {
+                this.Frame.Navigate(typeof(HospitalDetailPage));
+            }
+            catch
+            {
+            }
+            //item.LoadCustomerData();
         }
         #region Регистрация NavigationHelper
 

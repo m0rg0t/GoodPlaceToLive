@@ -11,6 +11,23 @@
     <Application.Resources>
         <vm:ViewModelLocator x:Key="Locator"
                              d:IsDataSource="True" />
+
+        <DataTemplate x:Key="Hospital310x260ItemTemplate">
+            <Grid Height="250" Width="310" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="150">
+                    <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                </Border>-->
+                <StackPanel Grid.Row="1" Margin="10">
+                    <TextBlock Text="{Binding ShortName}" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap" MaxHeight="170"/>
+                    <TextBlock Text="{Binding Address}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
+                    <TextBlock Text="Сумма контрактов:" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
+                    <TextBlock Text="{Binding ContractSumString}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,5,0,0" MaxHeight="60" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Application.Resources>
 
 </Application>
