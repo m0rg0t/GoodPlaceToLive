@@ -114,6 +114,8 @@ namespace GoodPlaceToLive
             
             //var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
             //this.Frame.Navigate(typeof(ItemPage), itemId);
+            var item = ((HospitalAdultItem) e.ClickedItem);
+            item.LoadCustomerData();
         }
         #region Регистрация NavigationHelper
 
