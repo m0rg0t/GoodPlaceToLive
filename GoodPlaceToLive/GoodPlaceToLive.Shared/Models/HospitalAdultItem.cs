@@ -358,7 +358,11 @@ namespace GoodPlaceToLive.Models
         public CustomerItem Customer
         {
             get { return _customer; }
-            set { _customer = value; }
+            set
+            {
+                _customer = value;
+                RaisePropertyChanged("Customer");
+            }
         }
         
 

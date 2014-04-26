@@ -65,9 +65,11 @@ namespace GoodPlaceToLive.Pages
         /// <see cref="Frame.Navigate(Type, Object)"/> при первоначальном запросе этой страницы и
         /// словарь состояний, сохраненных этой страницей в ходе предыдущего
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
-        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Присвоение коллекции привязываемых групп объекту this.DefaultViewModel["Groups"]
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            rmain.CurrentItem.LoadCustomerData();
         }
 
         #region Регистрация NavigationHelper
