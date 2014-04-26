@@ -1,4 +1,5 @@
 ﻿using Windows.Devices.Geolocation;
+using Windows.UI.ApplicationSettings;
 using Bing.Maps;
 using GoodPlaceToLive.Common;
 using System;
@@ -16,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента страницы концентратора задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=321224
+using GoodPlaceToLive.Controls;
 using GoodPlaceToLive.Models;
 using GoodPlaceToLive.ViewModel;
 using Microsoft.Practices.ServiceLocation;
@@ -84,11 +86,13 @@ namespace GoodPlaceToLive.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested += Settings_CommandsRequested;
             navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested -= Settings_CommandsRequested;
             navigationHelper.OnNavigatedFrom(e);
         }
 
@@ -136,6 +140,34 @@ namespace GoodPlaceToLive.Pages
                 pushpin.Tapped += pushpinTapped;
                 map.Children.Add(pushpin);
             };
+        }
+
+        void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            try
+            {
+                var viewAboutPage = new SettingsCommand("", "Об авторе", cmd =>
+                {
+                    //(Window.Current.Content as Frame).Navigate(typeof(AboutPage));
+                    var settingsFlyout = new Callisto.Controls.SettingsFlyout();
+                    settingsFlyout.Content = new About();
+                    settingsFlyout.HeaderText = "Об авторе";
+
+                    settingsFlyout.IsOpen = true;
+                });
+                args.Request.ApplicationCommands.Add(viewAboutPage);
+
+                var viewAboutMalukahPage = new SettingsCommand("", "Политика конфиденциальности", cmd =>
+                {
+                    var settingsFlyout = new Callisto.Controls.SettingsFlyout();
+                    settingsFlyout.Content = new Privacy();
+                    settingsFlyout.HeaderText = "Политика конфиденциальности";
+
+                    settingsFlyout.IsOpen = true;
+                });
+                args.Request.ApplicationCommands.Add(viewAboutMalukahPage);
+            }
+            catch { };
         }
 
         private void pushpinTapped(object sender, TappedRoutedEventArgs e)

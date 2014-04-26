@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using GoodPlaceToLive.Controls;
 using GoodPlaceToLive.Data;
 using GoodPlaceToLive.Common;
 using GoodPlaceToLive.Models;
@@ -45,6 +47,34 @@ namespace GoodPlaceToLive
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
+        }
+
+        void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            try
+            {
+                var viewAboutPage = new SettingsCommand("", "Об авторе", cmd =>
+                {
+                    //(Window.Current.Content as Frame).Navigate(typeof(AboutPage));
+                    var settingsFlyout = new Callisto.Controls.SettingsFlyout();
+                    settingsFlyout.Content = new About();
+                    settingsFlyout.HeaderText = "Об авторе";
+
+                    settingsFlyout.IsOpen = true;
+                });
+                args.Request.ApplicationCommands.Add(viewAboutPage);
+
+                var viewAboutMalukahPage = new SettingsCommand("", "Политика конфиденциальности", cmd =>
+                {
+                    var settingsFlyout = new Callisto.Controls.SettingsFlyout();
+                    settingsFlyout.Content = new Privacy();
+                    settingsFlyout.HeaderText = "Политика конфиденциальности";
+
+                    settingsFlyout.IsOpen = true;
+                });
+                args.Request.ApplicationCommands.Add(viewAboutMalukahPage);
+            }
+            catch { };
         }
 
         /// <summary>
@@ -153,11 +183,13 @@ namespace GoodPlaceToLive
         /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested += Settings_CommandsRequested;
             this.navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested -= Settings_CommandsRequested;
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
