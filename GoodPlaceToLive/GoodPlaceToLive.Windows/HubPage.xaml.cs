@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -14,8 +15,12 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GoodPlaceToLive.Data;
 using GoodPlaceToLive.Common;
+using GoodPlaceToLive.Models;
+using Microsoft.WindowsAzure.MobileServices;
+using System.Net.Http;
 
 // Документацию по шаблону проекта "Универсальное приложение с Hub" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391955
+using Newtonsoft.Json;
 
 namespace GoodPlaceToLive
 {
@@ -26,6 +31,9 @@ namespace GoodPlaceToLive
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        private MobileServiceCollection<HospitalAdultItem, HospitalAdultItem> parkItems;
+        private IMobileServiceTable<HospitalAdultItem> HospitalsTable = App.MobileService.GetTable<HospitalAdultItem>();
 
         /// <summary>
         /// Получает NavigationHelper, используемый для облегчения навигации и управления жизненным циклом процессов.
@@ -66,6 +74,19 @@ namespace GoodPlaceToLive
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
             this.DefaultViewModel["Section3Items"] = sampleDataGroup;
+
+            LoadCSV();
+        }
+
+        public async void LoadCSV()
+        {
+            HttpClient client = new HttpClient();
+            string earthQuakeData = await client.GetStringAsync("http://goodplacetolive.azurewebsites.net/hospital_adult1.txt");
+            var results = JsonConvert.DeserializeObject<ObservableCollection<HospitalAdultItem>>(earthQuakeData.ToString());
+            foreach (var item in results)
+            {
+                //await HospitalsTable.InsertAsync(item);
+            }
         }
 
         /// <summary>
@@ -90,8 +111,9 @@ namespace GoodPlaceToLive
         {
             // Переход к соответствующей странице назначения и настройка новой страницы
             // путем передачи необходимой информации в виде параметра навигации
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
+            
+            //var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
+            //this.Frame.Navigate(typeof(ItemPage), itemId);
         }
         #region Регистрация NavigationHelper
 

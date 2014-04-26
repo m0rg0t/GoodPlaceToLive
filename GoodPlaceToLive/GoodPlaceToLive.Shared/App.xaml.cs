@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using GoodPlaceToLive.Common;
+using Microsoft.WindowsAzure.MobileServices;
 
 // Документацию по шаблону проекта "Универсальное приложение с Hub" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -39,6 +40,11 @@ namespace GoodPlaceToLive
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
         }
+
+        public static MobileServiceClient MobileService = new MobileServiceClient(
+            "https://goodplacetolive.azure-mobile.net/",
+            "nlCsTQnlhqUbIShsbuNFzAWdxCWBnA13"
+        );
 
         /// <summary>
         /// Вызывается при обычном запуске приложения пользователем.  Будут использоваться другие точки входа,

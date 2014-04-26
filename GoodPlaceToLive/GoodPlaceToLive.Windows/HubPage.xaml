@@ -27,6 +27,21 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="Hospital310x260ItemTemplate">
+            <Grid Height="250" Width="310" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="150">
+                    <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                </Border>-->
+                <StackPanel Grid.Row="1" Margin="10">
+                    <TextBlock Text="{Binding ShortName}" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap" MaxHeight="170"/>
+                    <TextBlock Text="{Binding Address}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
     <!--
@@ -53,18 +68,33 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-                    <TextBlock x:Name="pageTitle" x:Uid="Header" Text="application name" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                    <TextBlock x:Name="pageTitle" x:Uid="Header" Text="Где жить хорошо?" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
                 </Grid>
             </Hub.Header>
             <HubSection Width="780" Margin="0,0,80,0">
                 <HubSection.Background>
-                    <ImageBrush ImageSource="Assets/MediumGray.png" Stretch="UniformToFill" />
+                    <ImageBrush ImageSource="Assets/hub1.jpg" Stretch="UniformToFill" />
                 </HubSection.Background>
             </HubSection>
-            <HubSection Width="500" x:Uid="Section1Header" Header="Section 1">
+            <HubSection x:Uid="HubHospitalSection" Header="Больницы">
                 <DataTemplate>
                     <Grid>
+                        <GridView
+                            x:Name="itemHotelsGridView"
+                            ItemsSource="{Binding ShortHospitalItems}"
+                            DataContext="{Binding Main, Source={StaticResource Locator}}"
+                            Margin="-9,-14,0,0"
+                            AutomationProperties.AutomationId="ItemGridView"
+                            AutomationProperties.Name="Items In Group"
+                            ItemTemplate="{StaticResource Hospital310x260ItemTemplate}"
+                            SelectionMode="None"
+                            IsSwipeEnabled="false"
+                            IsItemClickEnabled="True"
+                            ItemClick="ItemView_ItemClick">
+                        </GridView>
+                    </Grid>
+                    <!--<Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -78,10 +108,10 @@
                                    x:Uid="DescriptionHeader" Text="Description text:"/>
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3"
                                    x:Uid="Section1DescriptionText" Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. "/>
-                    </Grid>
+                    </Grid>-->
                 </DataTemplate>
             </HubSection>
-            <HubSection Width="520" x:Uid="Section2Header" Header="Section 2">
+            <HubSection Width="520" x:Uid="Section2Header" Header="Section 2" Visibility="Collapsed">
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -102,7 +132,7 @@
                 </DataTemplate>
             </HubSection>
             <HubSection IsHeaderInteractive="True" DataContext="{Binding Section3Items}" d:DataContext="{Binding Groups[3], Source={d:DesignData Source=../GoodPlaceToLive.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
-                        x:Uid="Section3Header" Header="Section 3" Padding="40,40,40,32">
+                        x:Uid="Section3Header" Header="Section 3" Padding="40,40,40,32" Visibility="Collapsed">
                 <DataTemplate>
                     <GridView
                         x:Name="itemGridView"
@@ -118,7 +148,7 @@
                     </GridView>
                 </DataTemplate>
             </HubSection>
-            <HubSection x:Uid="Section4Header" Header="Section 4">
+            <HubSection x:Uid="Section4Header" Header="Section 4" Visibility="Collapsed">
                 <DataTemplate>
                     <!-- width of 400 -->
                     <StackPanel Orientation="Vertical">

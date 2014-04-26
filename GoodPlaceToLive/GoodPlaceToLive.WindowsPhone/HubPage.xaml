@@ -14,7 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
-                    <ImageBrush x:Key="HubBackgroundImageBrush" ImageSource="Assets/HubBackground.png"/>
+                    <!--<ImageBrush x:Key="HubBackgroundImageBrush" ImageSource="Assets/HubBackground.png"/>-->
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="HighContrast">
                     <ImageBrush x:Key="HubBackgroundImageBrush" ImageSource="{x:Null}"/>
@@ -35,20 +35,19 @@
                 </Grid>
             </DataTemplate>
 
-            <DataTemplate x:Key="StandardTripleLineItemTemplate">
+            <DataTemplate x:Key="HospitalItemTemplate">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
+                    <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
                         <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="99" Width="99"/>
-                    </Border>
-                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                        <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                        <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
-                        <TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>
+                    </Border>-->
+                    <StackPanel Grid.Column="0" Margin="12,0,0,0">
+                        <TextBlock Text="{Binding ShortName}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                        <TextBlock Text="{Binding Address}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                        <!--<TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>-->
                     </StackPanel>
                 </Grid>
             </DataTemplate>
@@ -73,7 +72,8 @@
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
-        <Hub x:Name="Hub" x:Uid="Hub" Header="application name" Background="{ThemeResource HubBackgroundImageBrush}">
+        <Hub x:Name="Hub" x:Uid="Hub" Header="Гдe жить хорошо?">
+            <!--Background="{ThemeResource HubBackgroundImageBrush}"-->
             <HubSection x:Uid="HubSection1" Header="SECTION 1" DataContext="{Binding Groups}">
                 <DataTemplate>
                     <ListView
@@ -92,7 +92,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
+            <!--<HubSection Visibility="Collapsed" x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
                          DataContext="{Binding Groups[0]}">
                 <DataTemplate>
                     <GridView
@@ -111,25 +111,25 @@
                         </GridView.ItemsPanel>
                     </GridView>
                 </DataTemplate>
-            </HubSection>
+            </HubSection>-->
 
-            <HubSection x:Uid="HubSection3" Header="SECTION 3"
-                        DataContext="{Binding Groups[1]}">
+            <HubSection x:Uid="HubHospitalSection" Header="Больницы">
                 <DataTemplate>
                     <ListView 
                         AutomationProperties.AutomationId="ItemListViewSection3"
                         AutomationProperties.Name="Items In Group"
                         SelectionMode="None"
                         IsItemClickEnabled="True"
-                        ItemsSource="{Binding Items}"
-                        ItemTemplate="{StaticResource StandardTripleLineItemTemplate}"
+                        ItemsSource="{Binding ShortHospitalItems}"
+                        ItemTemplate="{StaticResource HospitalItemTemplate}"
                         ItemClick="ItemView_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+                        ContinuumNavigationTransitionInfo.ExitElementContainer="True" 
+                        DataContext="{Binding Main, Source={StaticResource Locator}}" AllowDrop="True">
                     </ListView>
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubSection4" Header="SECTION 4"
+            <!--<HubSection x:Uid="HubSection4" Header="SECTION 4"
                         DataContext="{Binding Groups[2]}">
                 <DataTemplate>
                     <ListView 
@@ -150,9 +150,9 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </DataTemplate>
-            </HubSection>
+            </HubSection>-->
 
-            <HubSection x:Uid="HubSection5" Header="SECTION 5"
+            <!--<HubSection x:Uid="HubSection5" Header="SECTION 5"
                         DataContext="{Binding Groups[3]}">
                 <DataTemplate>
                     <ListView 
@@ -166,7 +166,7 @@
                         ContinuumNavigationTransitionInfo.ExitElementContainer="True">
                     </ListView>
                 </DataTemplate>
-            </HubSection>
+            </HubSection>-->
         </Hub>
     </Grid>
 </Page>
