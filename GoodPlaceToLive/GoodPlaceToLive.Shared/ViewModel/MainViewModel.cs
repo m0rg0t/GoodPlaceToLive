@@ -66,7 +66,22 @@ namespace GoodPlaceToLive.ViewModel
                     return new List<HospitalAdultItem>();
                 }
             }
-        } 
+        }
+
+        private HospitalAdultItem _currentItem = new HospitalAdultItem();
+        /// <summary>
+        /// current hospital item
+        /// </summary>
+        public HospitalAdultItem CurrentItem
+        {
+            get { return _currentItem; }
+            set
+            {
+                _currentItem = value;
+                RaisePropertyChanged("CurrentItem");
+            }
+        }
+        
 
         private bool _loading = false;
         /// <summary>

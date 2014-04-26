@@ -18,6 +18,8 @@ using GoodPlaceToLive.Data;
 using GoodPlaceToLive.Common;
 using GoodPlaceToLive.Models;
 using GoodPlaceToLive.Pages;
+using GoodPlaceToLive.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Net.Http;
 
@@ -126,9 +128,11 @@ namespace GoodPlaceToLive
             
             //var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
             //this.Frame.Navigate(typeof(ItemPage), itemId);
-            var item = ((HospitalAdultItem) e.ClickedItem);
             try
             {
+                var item = ((HospitalAdultItem)e.ClickedItem);
+                var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+                rmain.CurrentItem = item;
                 this.Frame.Navigate(typeof(HospitalDetailPage));
             }
             catch

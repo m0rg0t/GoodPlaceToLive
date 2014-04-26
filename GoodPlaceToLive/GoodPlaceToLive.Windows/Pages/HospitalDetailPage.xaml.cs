@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Windows.Devices.Geolocation;
+using Bing.Maps;
+using GoodPlaceToLive.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using GoodPlaceToLive.Common;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,13 +15,14 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Шаблон элемента страницы сведений об элементе задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234232
+// Шаблон элемента страницы концентратора задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=321224
+using GoodPlaceToLive.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 
 namespace GoodPlaceToLive.Pages
 {
     /// <summary>
-    /// Страница, на которой отображаются сведения об отдельном элементе внутри группы; при этом можно с помощью жестов
-    /// перемещаться между другими элементами из этой группы.
+    /// Страница, на которой отображается сгруппированная коллекция элементов.
     /// </summary>
     public sealed partial class HospitalDetailPage : Page
     {
@@ -51,6 +53,7 @@ namespace GoodPlaceToLive.Pages
             this.navigationHelper.LoadState += navigationHelper_LoadState;
         }
 
+
         /// <summary>
         /// Заполняет страницу содержимым, передаваемым в процессе навигации.  Также предоставляется любое сохраненное состояние
         /// при повторном создании страницы из предыдущего сеанса.
@@ -64,21 +67,13 @@ namespace GoodPlaceToLive.Pages
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            object navigationParameter;
-            if (e.PageState != null && e.PageState.ContainsKey("SelectedItem"))
-            {
-                navigationParameter = e.PageState["SelectedItem"];
-            }
-
-            // TODO: Присвоить this.DefaultViewModel["Group"] связываемую группу
-            // TODO: Присвоить this.DefaultViewModel["Items"] коллекцию связываемых элементов
-            // TODO: Назначение выбранного элемента объекту this.flipView.SelectedItem
+            // TODO: Присвоение коллекции привязываемых групп объекту this.DefaultViewModel["Groups"]
         }
 
         #region Регистрация NavigationHelper
 
         /// Методы, предоставленные в этом разделе, используются исключительно для того, чтобы
-        /// NavigationHelper мог откликаться на методы навигации страницы.
+        /// NavigationHelper для отклика на методы навигации страницы.
         /// 
         /// Логика страницы должна быть размещена в обработчиках событий для 
         /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
@@ -97,5 +92,31 @@ namespace GoodPlaceToLive.Pages
         }
 
         #endregion
+
+        private async void MainMap_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //throw new NotImplementedException();
+            var bounds = Window.Current.Bounds;
+            double height = bounds.Height;
+            double width = bounds.Width;
+            ((Map)sender).Height = height;
+
+            var map = ((Map)sender);
+
+            var _geolocator = new Geolocator();
+            //Geoposition pos = await _geolocator.GetGeopositionAsync();
+            //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+            var zoomLevel = 14;
+            
+
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            var location = new Location(Double.Parse(rmain.CurrentItem.Y), Double.Parse(rmain.CurrentItem.X));
+            map.SetView(location, zoomLevel);
+
+            Pushpin pushpin = new Pushpin();
+            MapLayer.SetPosition(pushpin, location);
+            pushpin.Name = rmain.CurrentItem.Id.ToString();
+            map.Children.Add(pushpin);
+        }
     }
 }

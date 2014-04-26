@@ -50,10 +50,11 @@
             <!--<HubSection.Background>
                     <ImageBrush Stretch="UniformToFill" />
             </HubSection.Background>-->
-            <HubSection Width="780" Margin="0,0,80,0">
+            <HubSection Width="780" Margin="0,0,40,0">
                 <DataTemplate>
                     <Grid>
-                        <Maps:Map Margin="-40,0,0,-50" Width="740"  Name="MainMap" Loaded="Map_Loaded"/>
+                        <Maps:Map Credentials="AtWHaWcUiDBPpGfbyXlERRH40dgNra0bA3PHO5L05C4X9vrauIeApjBa9MKOxeTy" 
+                                  Margin="-40,0,0,-50" Width="740"  Name="MainMap" Loaded="Map_Loaded"/>
                     </Grid>
                 </DataTemplate>
             </HubSection>

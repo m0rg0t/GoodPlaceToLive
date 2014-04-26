@@ -112,14 +112,21 @@ namespace GoodPlaceToLive.Models
             set { _chiefGender = value; }
         }
 
-        private string _publicPhon;
+        private string _publicPhone;
         /// <summary>
         /// 
         /// </summary>
         public string PublicPhone
         {
-            get { return _publicPhon; }
-            set { _publicPhon = value; }
+            get
+            {
+                if (String.IsNullOrEmpty(_publicPhone))
+                {
+                    return "Не указан";
+                }
+                return _publicPhone;
+            }
+            set { _publicPhone = value; }
         }
 
         private string _fax;
@@ -128,7 +135,14 @@ namespace GoodPlaceToLive.Models
         /// </summary>
         public string Fax
         {
-            get { return _fax; }
+            get
+            {
+                if (String.IsNullOrEmpty(_fax))
+                {
+                    return "Не указан";
+                }
+                return _fax;
+            }
             set { _fax = value; }
         }
 
@@ -138,7 +152,14 @@ namespace GoodPlaceToLive.Models
         /// </summary>
         public string Email
         {
-            get { return _email; }
+            get
+            {
+                if (String.IsNullOrEmpty(_email))
+                {
+                    return "Не указан";
+                }
+                return _email;
+            }
             set { _email = value; }
         }
 
@@ -168,7 +189,14 @@ namespace GoodPlaceToLive.Models
         /// </summary>
         public string WorkingHours
         {
-            get { return _WorkingHours; }
+            get
+            {
+                if (String.IsNullOrEmpty(_WorkingHours))
+                {
+                    return "Не указаны";
+                }
+                return _WorkingHours;
+            }
             set { _WorkingHours = value; }
         }
 

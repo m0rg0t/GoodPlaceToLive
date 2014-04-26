@@ -1,4 +1,5 @@
-﻿using Bing.Maps;
+﻿using Windows.Devices.Geolocation;
+using Bing.Maps;
 using GoodPlaceToLive.Common;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента страницы концентратора задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=321224
 using GoodPlaceToLive.Models;
+using GoodPlaceToLive.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 
 namespace GoodPlaceToLive.Pages
 {
@@ -97,6 +100,8 @@ namespace GoodPlaceToLive.Pages
             try
             {
                 var item = ((HospitalAdultItem)e.ClickedItem);
+                var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+                rmain.CurrentItem = item;
                 this.Frame.Navigate(typeof(HospitalDetailPage));
             }
             catch
@@ -104,12 +109,50 @@ namespace GoodPlaceToLive.Pages
             }
         }
 
-        private void Map_Loaded(object sender, RoutedEventArgs e)
+        private Geolocator _geolocator = null;
+
+        private async void Map_Loaded(object sender, RoutedEventArgs e)
         {
             var bounds = Window.Current.Bounds;
             double height = bounds.Height;
             double width = bounds.Width;
             ((Map) sender).Height = height;
+
+            var map = ((Map) sender);
+
+            _geolocator = new Geolocator();
+            Geoposition pos = await _geolocator.GetGeopositionAsync();
+            Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+            var zoomLevel = 10;
+            map.SetView(mylocation, zoomLevel);
+
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            foreach (HospitalAdultItem item in rmain.HospitalItems)
+            {
+                Pushpin pushpin = new Pushpin();
+                var location = new Location(Double.Parse(item.Y), Double.Parse(item.X));
+                MapLayer.SetPosition(pushpin, location);
+                pushpin.Name = item.Id.ToString();
+                pushpin.Tapped += pushpinTapped;
+                map.Children.Add(pushpin);
+            };
+        }
+
+        private void pushpinTapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+                rmain.CurrentItem = rmain.HospitalItems.FirstOrDefault(c=>c.Id==((Pushpin)sender).Name.ToString());
+                if (rmain.CurrentItem != null)
+                {
+                    //var item = ((HospitalAdultItem)e.ClickedItem);
+                    this.Frame.Navigate(typeof (HospitalDetailPage));
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }
