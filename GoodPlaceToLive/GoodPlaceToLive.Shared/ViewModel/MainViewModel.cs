@@ -32,7 +32,13 @@ namespace GoodPlaceToLive.ViewModel
             HelloWorld = IsInDesignMode
                 ? "Runs in design mode"
                 : "Runs in runtime mode";
-            LoadHospitalsData();
+            LoadData();
+        }
+
+        public async void LoadData()
+        {
+            await LoadHospitalsData();
+            await GetNearestItems();
         }
 
         private ObservableCollection<HospitalAdultItem> _hospitalItems = new ObservableCollection<HospitalAdultItem>();
@@ -74,19 +80,46 @@ namespace GoodPlaceToLive.ViewModel
         /// <summary>
         /// 
         /// </summary>
-        public List<HospitalAdultItem> MostFoundedHospitalItems
-        {
-            get
-            {
-                return HospitalItems.OrderByDescending(c=>c.ContractSum).Take(9).ToList();
-            }
-            private set { }
-        }
-
+        /// <returns></returns>
         public async Task<bool> GetNearestItems()
         {
+            var nitems = HospitalItems.Where(c => c.Distance < 3);
+            double count = 0;
+            NearestItems = new ObservableCollection<BasePlaceItem>();
+            foreach (var item in nitems)
+            {
+                count = count + item.PlaceCoefficient;
+                NearestItems.Add(item);
+            }
+            CurrentCoefficient = Math.Round(count);
             return true;
         }
+
+        private ObservableCollection<BasePlaceItem> _nearestItems = new ObservableCollection<BasePlaceItem>();
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<BasePlaceItem> NearestItems
+        {
+            get { return _nearestItems; }
+            set
+            {
+                _nearestItems = value;
+                RaisePropertyChanged("NearestItems");
+            }
+        }
+
+        private ObservableCollection<BasePlaceItem> _items = new ObservableCollection<BasePlaceItem>();
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<BasePlaceItem> Items
+        {
+            get { return _items; }
+            set { _items = value; }
+        }
+        
+        
 
         public List<HospitalAdultItem> BestHospitalItems
         {
@@ -135,6 +168,46 @@ namespace GoodPlaceToLive.ViewModel
             }
         }
 
+        private double _CurrentCoefficient = 0;
+        /// <summary>
+        /// Current place coeffcient
+        /// </summary>
+        public double CurrentCoefficient
+        {
+            get { return _CurrentCoefficient; }
+            set
+            {
+                _CurrentCoefficient = value;
+                RaisePropertyChanged("CurrentCoefficient");
+                RaisePropertyChanged("CurrentCoefficientString");
+            }
+        }
+
+        public string CurrentCoefficientString
+        {
+            private set { }
+            get
+            {
+                //return ContractSum.ToString();
+                return string.Format("{0:#,###,##0.00}", CurrentCoefficient);
+            }
+        }
+
+        private Geocoordinate _myCoordinate;
+        /// <summary>
+        /// My current coordinates
+        /// </summary>
+        public Geocoordinate MyCoordinate
+        {
+            get { return _myCoordinate; }
+            set
+            {
+                _myCoordinate = value;
+                RaisePropertyChanged("MyCoordinate");
+            }
+        }
+        
+
         private MobileServiceCollection<HospitalAdultItem, HospitalAdultItem> hospitalAdultsItems;
         private IMobileServiceTable<HospitalAdultItem> HospitalsTable = App.MobileService.GetTable<HospitalAdultItem>();
 
@@ -145,9 +218,13 @@ namespace GoodPlaceToLive.ViewModel
             Geolocator _geolocator = new Geolocator();
             Geoposition pos = await _geolocator.GetGeopositionAsync();
             Geocoordinate posGeo = pos.Coordinate;
+            MyCoordinate = pos.Coordinate;
             //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
             foreach (var item in HospitalItems)
             {
+                item.Latitude = Double.Parse(item.Y);
+                item.Longitude =  Double.Parse(item.X);
+
                 item.CalculateDistance(posGeo);
             }
 

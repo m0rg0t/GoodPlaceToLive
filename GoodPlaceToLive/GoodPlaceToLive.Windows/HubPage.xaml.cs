@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Bing.Maps;
 using GoodPlaceToLive.Controls;
 using GoodPlaceToLive.Data;
 using GoodPlaceToLive.Common;
@@ -194,5 +195,18 @@ namespace GoodPlaceToLive
         }
 
         #endregion
+
+        private Map placeMap;
+
+        private void MapPlace_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                placeMap = ((Map)sender);
+            }
+            catch
+            {
+            }
+        }
     }
 }
