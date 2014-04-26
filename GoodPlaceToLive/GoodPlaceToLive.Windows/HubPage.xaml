@@ -64,7 +64,7 @@
                     <ImageBrush ImageSource="Assets/hub1.jpg" Stretch="UniformToFill" />
                 </HubSection.Background>
             </HubSection>
-            <HubSection x:Uid="HubMostFoundedHospitalSection" Header="Наболее поддерживаемые больницы" Name="Hospitals" IsHeaderInteractive="True">
+            <HubSection x:Uid="HubMostFoundedHospitalSection" Header="Больницы" Name="Hospitals" IsHeaderInteractive="True">
                 <DataTemplate>
                     <Grid>
                         <GridView

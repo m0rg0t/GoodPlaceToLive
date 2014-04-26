@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\DistanceHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\IParserEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
@@ -23,6 +24,7 @@
       <DependentUpon>Privacy.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BasePlaceItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\HospitalAdultItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParserEngines\BasicParserEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParserEngines\BetterParserEngine.cs" />

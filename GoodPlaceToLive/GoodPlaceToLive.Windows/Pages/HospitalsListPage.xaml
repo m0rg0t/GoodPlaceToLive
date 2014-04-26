@@ -63,7 +63,7 @@
                     <Grid>
                         <GridView
 							x:Name="itemHotelsGridView"
-							ItemsSource="{Binding HospitalItems}"
+							ItemsSource="{Binding BestAllHospitalItems}"
 							DataContext="{Binding Main, Source={StaticResource Locator}}"
 							Margin="-9,-14,0,0"
 							AutomationProperties.AutomationId="ItemGridView"

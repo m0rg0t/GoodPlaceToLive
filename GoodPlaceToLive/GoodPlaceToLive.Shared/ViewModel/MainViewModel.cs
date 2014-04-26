@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace GoodPlaceToLive.ViewModel
                 RaisePropertyChanged("HospitalItems");
                 RaisePropertyChanged("ShortHospitalItems");
                 RaisePropertyChanged("MostFoundedHospitalItems");
+                RaisePropertyChanged("BestHospitalItems");
             }
         }
 
@@ -80,7 +82,29 @@ namespace GoodPlaceToLive.ViewModel
             }
             private set { }
         }
-        
+
+        public async Task<bool> GetNearestItems()
+        {
+            return true;
+        }
+
+        public List<HospitalAdultItem> BestHospitalItems
+        {
+            get
+            {
+                return HospitalItems.OrderByDescending(c => c.PlaceCoefficient).Take(9).ToList();
+            }
+            private set { }
+        }
+
+        public List<HospitalAdultItem> BestAllHospitalItems
+        {
+            get
+            {
+                return HospitalItems.OrderByDescending(c => c.PlaceCoefficient).ToList();
+            }
+            private set { }
+        }
 
         private HospitalAdultItem _currentItem = new HospitalAdultItem();
         /// <summary>
@@ -118,6 +142,17 @@ namespace GoodPlaceToLive.ViewModel
         {
             this.Loading = true;
             HospitalItems = await HospitalsTable.ToCollectionAsync(100);
+            Geolocator _geolocator = new Geolocator();
+            Geoposition pos = await _geolocator.GetGeopositionAsync();
+            Geocoordinate posGeo = pos.Coordinate;
+            //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+            foreach (var item in HospitalItems)
+            {
+                item.CalculateDistance(posGeo);
+            }
+
+            RaisePropertyChanged("BestAllHospitalItems");
+            RaisePropertyChanged("BestHospitalItems");
             RaisePropertyChanged("HospitalItems");
             RaisePropertyChanged("ShortHospitalItems");
             this.Loading = false;

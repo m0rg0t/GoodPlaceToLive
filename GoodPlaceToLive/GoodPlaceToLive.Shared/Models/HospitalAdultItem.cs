@@ -10,7 +10,7 @@ using System.Text;
 
 namespace GoodPlaceToLive.Models
 {
-    public class HospitalAdultItem: ViewModelBase
+    public class HospitalAdultItem: BasePlaceItem
     {
         private string _rownum;
         /// <summary>
@@ -289,37 +289,6 @@ namespace GoodPlaceToLive.Models
                 string outStr = "http://maps.googleapis.com/maps/api/streetview?size=200x200&location=" + this.X.Replace(",",".") + ", " + this.Y.Replace(",",".") + "&fov=180&heading=235&pitch=10&sensor=false";
                 return outStr;
             }
-        }
-
-        private double _contractSum = 0;
-        /// <summary>
-        /// Сумма контрактов
-        /// </summary>
-        public double ContractSum
-        {
-            get { return _contractSum; }
-            set { _contractSum = value; }
-        }
-
-        [IgnoreDataMember]
-        public string ContractSumString
-        {
-            private set { }
-            get
-            {
-                //return ContractSum.ToString();
-                return string.Format("{0:#,###,##0.00 руб}", ContractSum);
-            }
-        }
-
-        private double _contractCount = 0;
-        /// <summary>
-        /// Количество контрактов
-        /// </summary>
-        public double ContractCount
-        {
-            get { return _contractCount; }
-            set { _contractCount = value; }
         }
         
 
