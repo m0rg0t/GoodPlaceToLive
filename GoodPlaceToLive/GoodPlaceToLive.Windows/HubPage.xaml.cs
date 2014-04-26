@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -75,7 +76,7 @@ namespace GoodPlaceToLive
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
             this.DefaultViewModel["Section3Items"] = sampleDataGroup;
 
-            LoadCSV();
+            //LoadCSV();
         }
 
         public async void LoadCSV()
@@ -85,8 +86,10 @@ namespace GoodPlaceToLive
             var results = JsonConvert.DeserializeObject<ObservableCollection<HospitalAdultItem>>(earthQuakeData.ToString());
             foreach (var item in results)
             {
-                //await HospitalsTable.InsertAsync(item);
+                await item.LoadCustomerData();
+                await HospitalsTable.InsertAsync(item);
             }
+            Debug.WriteLine("Import finished");
         }
 
         /// <summary>

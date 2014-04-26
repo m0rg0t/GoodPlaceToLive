@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ClearSpendingSDK;
 using ClearSpendingSDK.Models;
@@ -249,6 +250,7 @@ namespace GoodPlaceToLive.Models
             set { _id = value; }
         }
 
+        [IgnoreDataMember]
         public string Image
         {
             private set
@@ -260,6 +262,38 @@ namespace GoodPlaceToLive.Models
                 return outStr;
             }
         }
+
+        private double _contractSum = 0;
+        /// <summary>
+        /// Сумма контрактов
+        /// </summary>
+        public double ContractSum
+        {
+            get { return _contractSum; }
+            set { _contractSum = value; }
+        }
+
+        [IgnoreDataMember]
+        public string ContractSumString
+        {
+            private set { }
+            get
+            {
+                //return ContractSum.ToString();
+                return string.Format("{0:#,###,##0.00 руб}", ContractSum);
+            }
+        }
+
+        private double _contractCount = 0;
+        /// <summary>
+        /// Количество контрактов
+        /// </summary>
+        public double ContractCount
+        {
+            get { return _contractCount; }
+            set { _contractCount = value; }
+        }
+        
 
         public async Task<bool> LoadCustomerData()
         {
@@ -276,6 +310,8 @@ namespace GoodPlaceToLive.Models
                 if (item != null)
                 {
                     Customer = item;
+                    this.ContractCount = Customer.ContractsCount;
+                    this.ContractSum = Customer.ContractsSum;
                 }
             }
             catch
@@ -285,10 +321,12 @@ namespace GoodPlaceToLive.Models
             return true;
         }
 
+        [IgnoreDataMember]
         private CustomerItem _customer;
         /// <summary>
         /// 
         /// </summary>
+        [IgnoreDataMember]
         public CustomerItem Customer
         {
             get { return _customer; }
