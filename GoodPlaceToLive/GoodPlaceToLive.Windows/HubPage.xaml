@@ -64,12 +64,12 @@
                     <ImageBrush ImageSource="Assets/hub1.jpg" Stretch="UniformToFill" />
                 </HubSection.Background>
             </HubSection>
-            <HubSection x:Uid="HubHospitalSection" Header="Больницы" Name="Hospitals" IsHeaderInteractive="True">
+            <HubSection x:Uid="HubMostFoundedHospitalSection" Header="Наболее поддерживаемые больницы" Name="Hospitals" IsHeaderInteractive="True">
                 <DataTemplate>
                     <Grid>
                         <GridView
                             x:Name="itemHotelsGridView"
-                            ItemsSource="{Binding ShortHospitalItems}"
+                            ItemsSource="{Binding MostFoundedHospitalItems}"
                             DataContext="{Binding Main, Source={StaticResource Locator}}"
                             Margin="-9,-14,0,0"
                             AutomationProperties.AutomationId="ItemGridView"

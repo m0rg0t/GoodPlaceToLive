@@ -49,6 +49,7 @@ namespace GoodPlaceToLive.ViewModel
                 _hospitalItems = value;
                 RaisePropertyChanged("HospitalItems");
                 RaisePropertyChanged("ShortHospitalItems");
+                RaisePropertyChanged("MostFoundedHospitalItems");
             }
         }
 
@@ -67,6 +68,19 @@ namespace GoodPlaceToLive.ViewModel
                 }
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<HospitalAdultItem> MostFoundedHospitalItems
+        {
+            get
+            {
+                return HospitalItems.OrderByDescending(c=>c.ContractSum).Take(9).ToList();
+            }
+            private set { }
+        }
+        
 
         private HospitalAdultItem _currentItem = new HospitalAdultItem();
         /// <summary>
