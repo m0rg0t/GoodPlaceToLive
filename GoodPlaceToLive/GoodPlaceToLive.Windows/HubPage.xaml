@@ -102,6 +102,26 @@
                     </Grid>
                 </DataTemplate>
             </HubSection>
+
+            <HubSection x:Uid="HubMostFoundedChildPlacesSection" Header="Детские сады" Name="ChildPlaces" IsHeaderInteractive="True">
+                <DataTemplate>
+                    <Grid>
+                        <GridView
+                            x:Name="itemChildPlacesGridView"
+                            ItemsSource="{Binding BestChildPlaceItems}"
+                            DataContext="{Binding Main, Source={StaticResource Locator}}"
+                            Margin="-9,-14,0,0"
+                            AutomationProperties.AutomationId="ItemGridView"
+                            AutomationProperties.Name="Items In Group"
+                            ItemTemplate="{StaticResource ChildPlaces310x260ItemTemplate}"
+                            SelectionMode="None"
+                            IsSwipeEnabled="false"
+                            IsItemClickEnabled="True"
+                            ItemClick="ItemChildPlacesGridView_OnItemClick">
+                        </GridView>
+                    </Grid>
+                </DataTemplate>
+            </HubSection>
             <HubSection Width="520" x:Uid="Section2Header" Header="Section 2" Visibility="Collapsed">
                 <DataTemplate>
                     <Grid>

@@ -109,8 +109,14 @@
     <Compile Include="HubPage.xaml.cs">
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ChildPacesDetailPage.xaml.cs">
+      <DependentUpon>ChildPacesDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\HospitalDetailPage.xaml.cs">
       <DependentUpon>HospitalDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ChildPlacesListPage.xaml.cs">
+      <DependentUpon>ChildPlacesListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\HospitalsListPage.xaml.cs">
       <DependentUpon>HospitalsListPage.xaml</DependentUpon>
@@ -138,9 +144,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\ChildPacesDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\HospitalDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ChildPlacesListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\HospitalsListPage.xaml">
       <SubType>Designer</SubType>

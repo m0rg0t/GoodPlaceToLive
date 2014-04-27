@@ -25,6 +25,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\BasePlaceItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ChildPlaceItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\HospitalAdultItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParserEngines\BasicParserEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParserEngines\BetterParserEngine.cs" />

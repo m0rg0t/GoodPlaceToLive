@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -41,6 +42,9 @@ namespace GoodPlaceToLive
 
         private MobileServiceCollection<HospitalAdultItem, HospitalAdultItem> parkItems;
         private IMobileServiceTable<HospitalAdultItem> HospitalsTable = App.MobileService.GetTable<HospitalAdultItem>();
+
+        private MobileServiceCollection<ChildPlaceItem, ChildPlaceItem> childItems;
+        private IMobileServiceTable<ChildPlaceItem> ChildTable = App.MobileService.GetTable<ChildPlaceItem>();
 
         /// <summary>
         /// Получает NavigationHelper, используемый для облегчения навигации и управления жизненным циклом процессов.
@@ -110,10 +114,44 @@ namespace GoodPlaceToLive
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
             this.DefaultViewModel["Section3Items"] = sampleDataGroup;
 
-            //LoadCSV();
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            rmain.NearestChanged+=rmain_NearestChanged;
+
+            LoadCSV();
+        }
+
+        void rmain_NearestChanged(object sender, EventArgs e)
+        {
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            placeMap.SetView(new Location(rmain.MyCoordinate.Latitude, rmain.MyCoordinate.Longitude), 12);
+            placeMap.Children.Clear();
+            foreach (HospitalAdultItem item in rmain.NearestItems)
+            {
+                Pushpin pushpin = new Pushpin();
+                var location = new Location((item.Latitude), (item.Longitude));
+                MapLayer.SetPosition(pushpin, location);
+                //pushpin.Background = new SolidColorBrush() { Color = new Color() {A=0, B=0, G=0, R=255}};
+                pushpin.Name = item.Id.ToString();
+                //pushpin.Tapped += pushpinTapped;
+                placeMap.Children.Add(pushpin);
+            };
+            //throw new NotImplementedException();
         }
 
         public async void LoadCSV()
+        {
+            /*HttpClient client = new HttpClient();
+            string earthQuakeData = await client.GetStringAsync("http://goodplacetolive.azurewebsites.net/child.txt");
+            var results = JsonConvert.DeserializeObject<ObservableCollection<ChildPlaceItem>>(earthQuakeData.ToString());
+            foreach (var item in results)
+            {
+                await item.LoadCustomerData();
+                await ChildTable.InsertAsync(item);
+            }*/
+            Debug.WriteLine("Import finished");
+        }
+
+        /*public async void LoadCSV()
         {
             HttpClient client = new HttpClient();
             string earthQuakeData = await client.GetStringAsync("http://goodplacetolive.azurewebsites.net/hospital_adult1.txt");
@@ -124,7 +162,7 @@ namespace GoodPlaceToLive
                 await HospitalsTable.InsertAsync(item);
             }
             Debug.WriteLine("Import finished");
-        }
+        }*/
 
         /// <summary>
         /// Вызывается при щелчке заголовка HubSection.
@@ -140,6 +178,9 @@ namespace GoodPlaceToLive
             {
                 case "Hospitals":
                     this.Frame.Navigate(typeof(HospitalsListPage));
+                    break;
+                case "ChildPlaces":
+                    this.Frame.Navigate(typeof (ChildPlacesListPage));
                     break;
                 default:
                     break;
@@ -203,6 +244,21 @@ namespace GoodPlaceToLive
             try
             {
                 placeMap = ((Map)sender);
+            }
+            catch
+            {
+            }
+        }
+
+        private void ItemChildPlacesGridView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            //throw new NotImplementedException();
+            try
+            {
+                var item = ((ChildPlaceItem)e.ClickedItem);
+                var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+                rmain.CurrentChildItem = item;
+                this.Frame.Navigate(typeof(ChildPlacesDetailPage));
             }
             catch
             {

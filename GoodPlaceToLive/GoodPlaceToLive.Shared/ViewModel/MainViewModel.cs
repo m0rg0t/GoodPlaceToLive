@@ -38,6 +38,7 @@ namespace GoodPlaceToLive.ViewModel
         public async void LoadData()
         {
             await LoadHospitalsData();
+            await LoadChildPlacesData();
             await GetNearestItems();
         }
 
@@ -92,8 +93,22 @@ namespace GoodPlaceToLive.ViewModel
                 NearestItems.Add(item);
             }
             CurrentCoefficient = Math.Round(count);
+            OnNearestChanged(null);
             return true;
         }
+
+        //public event EventHandler<MyEventArgs> Changed;
+        //public event EventHandler NearestChanged;
+        protected virtual void OnNearestChanged(EventArgs e)
+        {
+            EventHandler handler = NearestChanged;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public event EventHandler NearestChanged;
 
         private ObservableCollection<BasePlaceItem> _nearestItems = new ObservableCollection<BasePlaceItem>();
         /// <summary>
@@ -152,6 +167,19 @@ namespace GoodPlaceToLive.ViewModel
                 RaisePropertyChanged("CurrentItem");
             }
         }
+
+        private ChildPlaceItem _currentChildItem = new ChildPlaceItem();
+
+        public ChildPlaceItem CurrentChildItem
+        {
+            get { return _currentChildItem; }
+            set
+            {
+                _currentChildItem = value;
+                RaisePropertyChanged("CurrentChildItem");
+            }
+        }
+        
         
 
         private bool _loading = false;
@@ -234,6 +262,56 @@ namespace GoodPlaceToLive.ViewModel
             RaisePropertyChanged("ShortHospitalItems");
             this.Loading = false;
 
+            return true;
+        }
+
+        private ObservableCollection<ChildPlaceItem> _childPlaceItems = new ObservableCollection<ChildPlaceItem>();
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<ChildPlaceItem> ChildPlaceItems
+        {
+            get { return _childPlaceItems; }
+            set
+            {
+                _childPlaceItems = value;
+                RaisePropertyChanged("ChildPlacesItems");
+            }
+        }
+
+        public List<ChildPlaceItem> BestChildPlaceItems
+        {
+            get
+            {
+                return ChildPlaceItems.OrderByDescending(c => c.PlaceCoefficient).Take(9).ToList();
+            }
+            private set { }
+        }
+
+        private MobileServiceCollection<ChildPlaceItem, ChildPlaceItem> ChildPlacesItems;
+        private IMobileServiceTable<ChildPlaceItem> ChildPlacesTable = App.MobileService.GetTable<ChildPlaceItem>();
+
+        public async Task<bool> LoadChildPlacesData()
+        {
+            this.Loading = true;
+            ChildPlacesItems = await ChildPlacesTable.ToCollectionAsync(100);
+            Geolocator _geolocator = new Geolocator();
+            Geoposition pos = await _geolocator.GetGeopositionAsync();
+            Geocoordinate posGeo = pos.Coordinate;
+            MyCoordinate = pos.Coordinate;
+            ChildPlaceItems = new ObservableCollection<ChildPlaceItem>();
+            //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+            foreach (var item in ChildPlacesItems)
+            {
+                item.Latitude = Double.Parse(item.Y);
+                item.Longitude = Double.Parse(item.X);
+
+                item.CalculateDistance(posGeo);
+                ChildPlaceItems.Add(item);
+            }
+            RaisePropertyChanged("ChildPlaceItems");
+            RaisePropertyChanged("BestChildPlaceItems");
+            this.Loading = false;
             return true;
         }
         
