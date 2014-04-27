@@ -121,6 +121,9 @@
     <Compile Include="Pages\HospitalsListPage.xaml.cs">
       <DependentUpon>HospitalsListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PlaceChangePage.xaml.cs">
+      <DependentUpon>PlaceChangePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +160,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\HospitalsListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PlaceChangePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

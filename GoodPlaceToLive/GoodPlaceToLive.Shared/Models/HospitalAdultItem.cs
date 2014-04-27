@@ -268,7 +268,7 @@ namespace GoodPlaceToLive.Models
             set { _globalid = value; }
         }
 
-        private string _id;
+        /*private string _id;
         /// <summary>
         /// 
         /// </summary>
@@ -276,7 +276,7 @@ namespace GoodPlaceToLive.Models
         {
             get { return _id; }
             set { _id = value; }
-        }
+        }*/
 
         [IgnoreDataMember]
         public string Image

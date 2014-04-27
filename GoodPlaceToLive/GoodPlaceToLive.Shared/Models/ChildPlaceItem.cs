@@ -14,7 +14,7 @@ namespace GoodPlaceToLive.Models
 {
     public class ChildPlaceItem: BasePlaceItem
     {
-        public string Id { get; set; }
+        //public string Id { get; set; }
 
         private string _address;
 

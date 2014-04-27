@@ -125,7 +125,7 @@ namespace GoodPlaceToLive
             var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
             placeMap.SetView(new Location(rmain.MyCoordinate.Latitude, rmain.MyCoordinate.Longitude), 12);
             placeMap.Children.Clear();
-            foreach (HospitalAdultItem item in rmain.NearestItems)
+            foreach (BasePlaceItem item in rmain.NearestItems)
             {
                 Pushpin pushpin = new Pushpin();
                 var location = new Location((item.Latitude), (item.Longitude));
@@ -181,6 +181,9 @@ namespace GoodPlaceToLive
                     break;
                 case "ChildPlaces":
                     this.Frame.Navigate(typeof (ChildPlacesListPage));
+                    break;
+                case "PlaceInfo":
+                    this.Frame.Navigate(typeof (PlaceChangePage));
                     break;
                 default:
                     break;
@@ -244,6 +247,7 @@ namespace GoodPlaceToLive
             try
             {
                 placeMap = ((Map)sender);
+                rmain_NearestChanged(placeMap, null);
             }
             catch
             {
