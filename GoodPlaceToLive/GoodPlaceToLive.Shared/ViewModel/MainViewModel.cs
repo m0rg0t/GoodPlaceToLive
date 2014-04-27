@@ -13,30 +13,19 @@ namespace GoodPlaceToLive.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private string _helloWorld;
 
-        public string HelloWorld
-        {
-            get
-            {
-                return _helloWorld;
-            }
-            set
-            {
-                Set(() => HelloWorld, ref _helloWorld, value);
-            }
-        }
 
         public MainViewModel()
         {
-            HelloWorld = IsInDesignMode
+            /*HelloWorld = IsInDesignMode
                 ? "Runs in design mode"
-                : "Runs in runtime mode";
+                : "Runs in runtime mode";*/
             LoadData();
         }
 
         public async void LoadData()
         {
+            Items = new ObservableCollection<BasePlaceItem>();
             await LoadHospitalsData();
             await LoadChildPlacesData();
             await GetNearestItems();
@@ -84,16 +73,22 @@ namespace GoodPlaceToLive.ViewModel
         /// <returns></returns>
         public async Task<bool> GetNearestItems()
         {
-            var nitems = HospitalItems.Where(c => c.Distance < 3);
-            double count = 0;
-            NearestItems = new ObservableCollection<BasePlaceItem>();
-            foreach (var item in nitems)
+            try
             {
-                count = count + item.PlaceCoefficient;
-                NearestItems.Add(item);
+                var nitems = Items.Where(c => c.Distance < 3);
+                double count = 0;
+                NearestItems = new ObservableCollection<BasePlaceItem>();
+                foreach (var item in nitems)
+                {
+                    count = count + item.PlaceCoefficient;
+                    NearestItems.Add(item);
+                }
+                CurrentCoefficient = Math.Round(count);
+                OnNearestChanged(null);
             }
-            CurrentCoefficient = Math.Round(count);
-            OnNearestChanged(null);
+            catch
+            {
+            }
             return true;
         }
 
@@ -254,6 +249,7 @@ namespace GoodPlaceToLive.ViewModel
                 item.Longitude =  Double.Parse(item.X);
 
                 item.CalculateDistance(posGeo);
+                Items.Add(item);
             }
 
             RaisePropertyChanged("BestAllHospitalItems");
@@ -294,7 +290,7 @@ namespace GoodPlaceToLive.ViewModel
         public async Task<bool> LoadChildPlacesData()
         {
             this.Loading = true;
-            ChildPlacesItems = await ChildPlacesTable.ToCollectionAsync(100);
+            ChildPlacesItems = await ChildPlacesTable.ToCollectionAsync(999);
             Geolocator _geolocator = new Geolocator();
             Geoposition pos = await _geolocator.GetGeopositionAsync();
             Geocoordinate posGeo = pos.Coordinate;
@@ -305,6 +301,7 @@ namespace GoodPlaceToLive.ViewModel
             {
                 item.Latitude = Double.Parse(item.Y);
                 item.Longitude = Double.Parse(item.X);
+                Items.Add(item);
 
                 item.CalculateDistance(posGeo);
                 ChildPlaceItems.Add(item);
