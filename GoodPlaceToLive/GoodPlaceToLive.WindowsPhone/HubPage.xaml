@@ -52,6 +52,23 @@
                 </Grid>
             </DataTemplate>
 
+            <DataTemplate x:Key="ChildItemTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
+                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="99" Width="99"/>
+                    </Border>-->
+                    <StackPanel Grid.Column="0" Margin="12,0,0,0">
+                        <TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                        <TextBlock Text="{Binding Address}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                        <!--<TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>-->
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
             <DataTemplate x:Key="StandardDoubleLineItemTemplate">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -74,7 +91,7 @@
     <Grid x:Name="LayoutRoot">
         <Hub x:Name="Hub" x:Uid="Hub" Header="Гдe жить хорошо?">
             <!--Background="{ThemeResource HubBackgroundImageBrush}"-->
-            <HubSection x:Uid="HubSection1" Header="SECTION 1" DataContext="{Binding Groups}">
+            <!--<HubSection x:Uid="HubSection1" Header="SECTION 1" DataContext="{Binding Groups}">
                 <DataTemplate>
                     <ListView
                         ItemsSource="{Binding}"
@@ -90,7 +107,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </DataTemplate>
-            </HubSection>
+            </HubSection>-->
 
             <!--<HubSection Visibility="Collapsed" x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
                          DataContext="{Binding Groups[0]}">
@@ -120,7 +137,7 @@
                         AutomationProperties.Name="Items In Group"
                         SelectionMode="None"
                         IsItemClickEnabled="True"
-                        ItemsSource="{Binding ShortHospitalItems}"
+                        ItemsSource="{Binding BestHospitalItems}"
                         ItemTemplate="{StaticResource HospitalItemTemplate}"
                         ItemClick="ItemView_ItemClick"
                         ContinuumNavigationTransitionInfo.ExitElementContainer="True" 
@@ -129,6 +146,23 @@
                 </DataTemplate>
             </HubSection>
 
+            <HubSection x:Uid="HubChildrenSection" Header="Детские сады">
+                <DataTemplate>
+                    <ListView 
+                        AutomationProperties.AutomationId="ItemListViewSection3"
+                        AutomationProperties.Name="Items In Group"
+                        SelectionMode="None"
+                        IsItemClickEnabled="True"
+                        ItemsSource="{Binding BestChildPlaceItems}"
+                        ItemTemplate="{StaticResource ChildItemTemplate}"
+                        Name="ChildList"
+                        ItemClick="ChildList_OnItemClick"
+                        ContinuumNavigationTransitionInfo.ExitElementContainer="True" 
+                        DataContext="{Binding Main, Source={StaticResource Locator}}" AllowDrop="True">
+                    </ListView>
+                </DataTemplate>
+            </HubSection>
+            
             <!--<HubSection x:Uid="HubSection4" Header="SECTION 4"
                         DataContext="{Binding Groups[2]}">
                 <DataTemplate>

@@ -1,16 +1,12 @@
 ﻿using GoodPlaceToLive.Common;
-using GoodPlaceToLive.Data;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,34 +14,23 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону проекта "Универсальное приложение с Hub" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391955
-using GoodPlaceToLive.Models;
-using GoodPlaceToLive.Pages;
-using GoodPlaceToLive.ViewModel;
-using Microsoft.Practices.ServiceLocation;
+// Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace GoodPlaceToLive
+namespace GoodPlaceToLive.Pages
 {
     /// <summary>
-    /// Страница, на которой отображается сгруппированная коллекция элементов.
+    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class HospitalDetailPage : Page
     {
-        private readonly NavigationHelper navigationHelper;
-        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+        private NavigationHelper navigationHelper;
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public HubPage()
+        public HospitalDetailPage()
         {
             this.InitializeComponent();
-
-            // Элемент управления Hub ("Главный раздел") поддерживается только в книжной ориентации
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
-
-            this.NavigationCacheMode = NavigationCacheMode.Required;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -77,14 +62,11 @@ namespace GoodPlaceToLive
         /// Источник события; как правило, <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">Данные события, предоставляющие параметр навигации, который передается
-        /// <see cref="Frame.Navigate(Type, object)"/> при первоначальном запросе этой страницы, и
+        /// <see cref="Frame.Navigate(Type, Object)"/> при первоначальном запросе этой страницы и
         /// словарь состояний, сохраненных этой страницей в ходе предыдущего
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
-            this.DefaultViewModel["Groups"] = sampleDataGroups;
         }
 
         /// <summary>
@@ -97,39 +79,6 @@ namespace GoodPlaceToLive
         /// сериализуемым состоянием.</param>
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            // TODO: Сохраните здесь уникальное состояние страницы.
-        }
-
-        /// <summary>
-        /// Показывает сведения о группе, которую щелкнул пользователь, в объекте <see cref="SectionPage"/>.
-        /// </summary>
-        /// <param name="sender">Источник события щелчка.</param>
-        /// <param name="e">Сведения о событии щелчка.</param>
-        private void GroupSection_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(SectionPage), groupId))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
-        }
-
-        /// <summary>
-        /// Показывает сведения об элементе, который щелкнул пользователь, в объекте <see cref="ItemPage"/>
-        /// </summary>
-        /// <param name="sender">Источник события щелчка.</param>
-        /// <param name="e">Значения по умолчанию для события щелчка.</param>
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            /*var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(ItemPage), itemId))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }*/
-            var item = ((HospitalAdultItem)e.ClickedItem);
-            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
-            rmain.CurrentItem = item;
-            Frame.Navigate(typeof(HospitalDetailPage));
         }
 
         #region Регистрация NavigationHelper
@@ -138,14 +87,15 @@ namespace GoodPlaceToLive
         /// Методы, предоставленные в этом разделе, используются исключительно для того, чтобы
         /// NavigationHelper для отклика на методы навигации страницы.
         /// <para>
-        /// Логика страницы должна быть размещена в обработчиках событий для
+        /// Логика страницы должна быть размещена в обработчиках событий для 
         /// <see cref="NavigationHelper.LoadState"/>
         /// и <see cref="NavigationHelper.SaveState"/>.
-        /// Параметр навигации доступен в методе LoadState
+        /// Параметр навигации доступен в методе LoadState 
         /// в дополнение к состоянию страницы, сохраненному в ходе предыдущего сеанса.
         /// </para>
         /// </summary>
-        /// <param name="e">Данные события, описывающие, каким образом была достигнута эта страница.</param>
+        /// <param name="e">Предоставляет данные для методов навигации и обработчики
+        /// событий, которые не могут отменить запрос навигации.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
@@ -157,15 +107,5 @@ namespace GoodPlaceToLive
         }
 
         #endregion
-
-        private void ChildList_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            //throw new NotImplementedException();
-            var item = ((ChildPlaceItem)e.ClickedItem);
-            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
-            rmain.CurrentChildItem = item;
-            Frame.Navigate(typeof (ChildPlacePage));
-
-        }
     }
 }
