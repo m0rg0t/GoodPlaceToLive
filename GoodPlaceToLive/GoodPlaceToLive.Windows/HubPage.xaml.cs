@@ -123,7 +123,7 @@ namespace GoodPlaceToLive
         void rmain_NearestChanged(object sender, EventArgs e)
         {
             var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
-            placeMap.SetView(new Location(rmain.MyCoordinate.Latitude, rmain.MyCoordinate.Longitude), 12);
+            placeMap.SetView(new Location(rmain.Latitude, rmain.Longitude), 12);
             placeMap.Children.Clear();
             foreach (BasePlaceItem item in rmain.NearestItems)
             {

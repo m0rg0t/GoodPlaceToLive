@@ -9,6 +9,7 @@
     xmlns:Maps="using:Bing.Maps"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="PlaceChangePage_OnLoaded"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -49,11 +50,19 @@
         </Grid>
         
         <Grid Row="1">
-            <StackPanel Margin="80,0,80,0">
+            <StackPanel Margin="80,0,80,0" DataContext="{Binding Main, Source={StaticResource Locator}}">
                 <TextBlock Text="Суммарный коэффициент места:" Style="{StaticResource SubheaderTextBlockStyle}"></TextBlock>
                 <TextBlock Style="{StaticResource SubheaderTextBlockStyle}"
                                        Text="{Binding CurrentCoefficientString}" Margin="0,5,0,0"
                                        DataContext="{Binding Main, Source={StaticResource Locator}}"></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="Широта:" Style="{StaticResource SubheaderTextBlockStyle}"></TextBlock>
+                    <TextBlock Text="{Binding Longitude}" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10,0,0,0"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="Долгота:" Style="{StaticResource SubheaderTextBlockStyle}"></TextBlock>
+                    <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="{Binding Latitude}" Margin="10,0,0,0"></TextBlock>
+                </StackPanel>
                 <Maps:Map Credentials="AtWHaWcUiDBPpGfbyXlERRH40dgNra0bA3PHO5L05C4X9vrauIeApjBa9MKOxeTy" 
                                   Margin="0,15,0,0" Height="600" Width="AUto"  Name="MapPlace" Loaded="MapPlace_OnLoaded" />
             </StackPanel>

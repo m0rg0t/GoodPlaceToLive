@@ -1,4 +1,5 @@
-﻿using Bing.Maps;
+﻿using Windows.Devices.Geolocation;
+using Bing.Maps;
 using GoodPlaceToLive.Common;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ using Windows.UI.Xaml.Navigation;
 using GoodPlaceToLive.Models;
 using GoodPlaceToLive.ViewModel;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace GoodPlaceToLive.Pages
 {
@@ -111,7 +113,7 @@ namespace GoodPlaceToLive.Pages
         {
             //throw new NotImplementedException();
             var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
-            MapPlace.SetView(new Location(rmain.MyCoordinate.Latitude, rmain.MyCoordinate.Longitude), 12);
+            MapPlace.SetView(new Location(rmain.Latitude, rmain.Longitude), 12);
             MapPlace.Children.Clear();
             foreach (BasePlaceItem item in rmain.NearestItems)
             {
@@ -123,6 +125,30 @@ namespace GoodPlaceToLive.Pages
                 //pushpin.Tapped += pushpinTapped;
                 MapPlace.Children.Add(pushpin);
             };
+        }
+
+        private void PlaceChangePage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            //throw new NotImplementedException();
+            this.MapPlace.PointerPressedOverride += MyMap_PointerPressedOverride;
+        }
+
+        void MyMap_PointerPressedOverride(object sender, PointerRoutedEventArgs e)
+        {
+            Bing.Maps.Location l = new Bing.Maps.Location();
+            this.MapPlace.TryPixelToLocation(e.GetCurrentPoint(this.MapPlace).Position, out l);
+            Bing.Maps.Pushpin pushpin = new Bing.Maps.Pushpin();
+            pushpin.SetValue(Bing.Maps.MapLayer.PositionProperty, l);
+            this.MapPlace.Children.Add(pushpin);
+
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            ///rmain.MyCoordinate = new Geoposition();
+            rmain.Latitude = l.Latitude;
+            rmain.Longitude = l.Longitude;
+
+            rmain.UpdateDistances();
+            rmain.GetNearestItems();
+
         }
     }
 }

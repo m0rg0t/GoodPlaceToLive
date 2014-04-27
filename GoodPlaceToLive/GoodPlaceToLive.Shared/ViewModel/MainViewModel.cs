@@ -5,7 +5,6 @@ using Windows.Devices.Geolocation;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using GoodPlaceToLive.Models;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -216,11 +215,11 @@ namespace GoodPlaceToLive.ViewModel
             }
         }
 
-        private Geocoordinate _myCoordinate;
+        /*private Geoposition _myCoordinate;
         /// <summary>
         /// My current coordinates
         /// </summary>
-        public Geocoordinate MyCoordinate
+        public Geoposition MyCoordinate
         {
             get { return _myCoordinate; }
             set
@@ -228,7 +227,32 @@ namespace GoodPlaceToLive.ViewModel
                 _myCoordinate = value;
                 RaisePropertyChanged("MyCoordinate");
             }
+        }*/
+
+        private double _lat;
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Latitude
+        {
+            get { return _lat; }
+            set
+            {
+                _lat = value;
+                RaisePropertyChanged("Latitude");
+            }
         }
+
+        private double _lon;
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Longitude
+        {
+            get { return _lon; }
+            set { _lon = value; RaisePropertyChanged("Longitude"); }
+        }
+        
         
 
         private MobileServiceCollection<HospitalAdultItem, HospitalAdultItem> hospitalAdultsItems;
@@ -241,7 +265,9 @@ namespace GoodPlaceToLive.ViewModel
             Geolocator _geolocator = new Geolocator();
             Geoposition pos = await _geolocator.GetGeopositionAsync();
             Geocoordinate posGeo = pos.Coordinate;
-            MyCoordinate = pos.Coordinate;
+            //MyCoordinate = pos;
+            Latitude = pos.Coordinate.Latitude;
+            Longitude = pos.Coordinate.Longitude;
             //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
             foreach (var item in HospitalItems)
             {
@@ -294,7 +320,9 @@ namespace GoodPlaceToLive.ViewModel
             Geolocator _geolocator = new Geolocator();
             Geoposition pos = await _geolocator.GetGeopositionAsync();
             Geocoordinate posGeo = pos.Coordinate;
-            MyCoordinate = pos.Coordinate;
+            //MyCoordinate = pos;
+            Longitude = pos.Coordinate.Longitude;
+            Latitude = pos.Coordinate.Latitude;
             ChildPlaceItems = new ObservableCollection<ChildPlaceItem>();
             //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
             foreach (var item in ChildPlacesItems)
@@ -311,6 +339,21 @@ namespace GoodPlaceToLive.ViewModel
             this.Loading = false;
             return true;
         }
-        
+
+        public void UpdateDistances()
+        {
+            Items = new ObservableCollection<BasePlaceItem>();
+            foreach (var item in ChildPlacesItems)
+            {
+                item.CalculateDistance(Latitude, Longitude);
+                Items.Add(item);
+            }
+            foreach (var item in HospitalItems)
+            {
+                item.CalculateDistance(Latitude, Longitude);
+                Items.Add(item);
+            } 
+            //throw new NotImplementedException();
+        }
     }
 }
