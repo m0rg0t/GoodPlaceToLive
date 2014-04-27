@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
+using GoodPlaceToLive.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 
 namespace GoodPlaceToLive.Pages
 {
@@ -67,6 +69,8 @@ namespace GoodPlaceToLive.Pages
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            rmain.CurrentChildItem.LoadCustomerData();
         }
 
         /// <summary>

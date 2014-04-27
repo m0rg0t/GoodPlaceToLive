@@ -130,7 +130,7 @@
                 </DataTemplate>
             </HubSection>-->
 
-            <HubSection x:Uid="HubHospitalSection" Header="Больницы">
+            <HubSection Width="400" x:Uid="HubHospitalSection" Header="Больницы">
                 <DataTemplate>
                     <ListView 
                         AutomationProperties.AutomationId="ItemListViewSection3"
@@ -146,7 +146,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Uid="HubChildrenSection" Header="Детские сады">
+            <HubSection Width="400"  x:Uid="HubChildrenSection" Header="Детские сады">
                 <DataTemplate>
                     <ListView 
                         AutomationProperties.AutomationId="ItemListViewSection3"
