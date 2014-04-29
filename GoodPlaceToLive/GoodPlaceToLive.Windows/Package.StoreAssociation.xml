@@ -388,5 +388,21 @@
     <MainPackageIdentityName>43337m0rg0t.463260DD3E985</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.-</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/93ee0a9d-84aa-4ee2-94e4-dbbb2912a09b" />
+  <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/93ee0a9d-84aa-4ee2-94e4-dbbb2912a09b">
+    <PackageInfo>
+      <OsMinVersion>6.3.0.0</OsMinVersion>
+      <PackageArchitecture>arm</PackageArchitecture>
+      <PackageMaxArchitectureVersion>1.1.0.3</PackageMaxArchitectureVersion>
+    </PackageInfo>
+    <PackageInfo>
+      <OsMinVersion>6.3.0.0</OsMinVersion>
+      <PackageArchitecture>x64</PackageArchitecture>
+      <PackageMaxArchitectureVersion>1.1.0.3</PackageMaxArchitectureVersion>
+    </PackageInfo>
+    <PackageInfo>
+      <OsMinVersion>6.3.0.0</OsMinVersion>
+      <PackageArchitecture>x86</PackageArchitecture>
+      <PackageMaxArchitectureVersion>1.1.0.3</PackageMaxArchitectureVersion>
+    </PackageInfo>
+  </PackageInfoList>
 </StoreAssociation>

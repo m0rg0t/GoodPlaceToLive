@@ -229,7 +229,7 @@ namespace GoodPlaceToLive.ViewModel
             }
         }*/
 
-        private double _lat;
+        private double _lat = 55.75;
         /// <summary>
         /// 
         /// </summary>
@@ -243,7 +243,7 @@ namespace GoodPlaceToLive.ViewModel
             }
         }
 
-        private double _lon;
+        private double _lon = 37.6;
         /// <summary>
         /// 
         /// </summary>
@@ -261,23 +261,35 @@ namespace GoodPlaceToLive.ViewModel
         public async Task<bool> LoadHospitalsData()
         {
             this.Loading = true;
-            HospitalItems = await HospitalsTable.ToCollectionAsync(100);
-            Geolocator _geolocator = new Geolocator();
-            Geoposition pos = await _geolocator.GetGeopositionAsync();
-            Geocoordinate posGeo = pos.Coordinate;
-            //MyCoordinate = pos;
-            Latitude = pos.Coordinate.Latitude;
-            Longitude = pos.Coordinate.Longitude;
-            //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
-            foreach (var item in HospitalItems)
+            try
             {
-                item.Latitude = Double.Parse(item.Y);
-                item.Longitude =  Double.Parse(item.X);
+                HospitalItems = await HospitalsTable.ToCollectionAsync(100);
+                try
+                {
+                    Geolocator _geolocator = new Geolocator();
+                    Geoposition pos = await _geolocator.GetGeopositionAsync();
+                    Geocoordinate posGeo = pos.Coordinate;
+                    //MyCoordinate = pos;
+                    Latitude = pos.Coordinate.Latitude;
+                    Longitude = pos.Coordinate.Longitude;
+                }
+                catch
+                {
+                    //Geocoordinate posGeo = new Geocoordinate();
+                }
+                //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+                foreach (var item in HospitalItems)
+                {
+                    item.Latitude = Double.Parse(item.Y);
+                    item.Longitude = Double.Parse(item.X);
 
-                item.CalculateDistance(posGeo);
-                Items.Add(item);
+                    item.CalculateDistance(Latitude, Longitude);
+                    Items.Add(item);
+                }
             }
-
+            catch
+            {
+            }
             RaisePropertyChanged("BestAllHospitalItems");
             RaisePropertyChanged("BestHospitalItems");
             RaisePropertyChanged("HospitalItems");
@@ -316,23 +328,36 @@ namespace GoodPlaceToLive.ViewModel
         public async Task<bool> LoadChildPlacesData()
         {
             this.Loading = true;
-            ChildPlacesItems = await ChildPlacesTable.ToCollectionAsync(999);
-            Geolocator _geolocator = new Geolocator();
-            Geoposition pos = await _geolocator.GetGeopositionAsync();
-            Geocoordinate posGeo = pos.Coordinate;
-            //MyCoordinate = pos;
-            Longitude = pos.Coordinate.Longitude;
-            Latitude = pos.Coordinate.Latitude;
-            ChildPlaceItems = new ObservableCollection<ChildPlaceItem>();
-            //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
-            foreach (var item in ChildPlacesItems)
+            try
             {
-                item.Latitude = Double.Parse(item.Y);
-                item.Longitude = Double.Parse(item.X);
-                Items.Add(item);
+                ChildPlacesItems = await ChildPlacesTable.ToCollectionAsync(999);
+                try
+                {
+                    Geolocator _geolocator = new Geolocator();
+                    Geoposition pos = await _geolocator.GetGeopositionAsync();
+                    Geocoordinate posGeo = pos.Coordinate;
 
-                item.CalculateDistance(posGeo);
-                ChildPlaceItems.Add(item);
+                    //MyCoordinate = pos;
+                    Longitude = pos.Coordinate.Longitude;
+                    Latitude = pos.Coordinate.Latitude;
+                }
+                catch
+                {
+                }
+                ChildPlaceItems = new ObservableCollection<ChildPlaceItem>();
+                //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+                foreach (var item in ChildPlacesItems)
+                {
+                    item.Latitude = Double.Parse(item.Y);
+                    item.Longitude = Double.Parse(item.X);
+                    Items.Add(item);
+
+                    item.CalculateDistance(Latitude, Longitude);
+                    ChildPlaceItems.Add(item);
+                }
+            }
+            catch
+            {
             }
             RaisePropertyChanged("ChildPlaceItems");
             RaisePropertyChanged("BestChildPlaceItems");
