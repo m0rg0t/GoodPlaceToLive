@@ -286,7 +286,7 @@ namespace GoodPlaceToLive.Models
             }
             get
             {
-                string outStr = "http://maps.googleapis.com/maps/api/streetview?size=200x200&location=" + this.X.Replace(",",".") + ", " + this.Y.Replace(",",".") + "&fov=180&heading=235&pitch=10&sensor=false";
+                string outStr = "http://maps.googleapis.com/maps/api/streetview?size=500x400&location=" + this.Y.Replace(",",".") + ", " + this.X.Replace(",",".") + "&fov=180&heading=235&pitch=10&sensor=false";
                 return outStr;
             }
         }

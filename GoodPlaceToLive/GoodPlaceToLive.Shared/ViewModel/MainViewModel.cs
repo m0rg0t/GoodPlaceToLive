@@ -134,7 +134,7 @@ namespace GoodPlaceToLive.ViewModel
         {
             get
             {
-                return HospitalItems.OrderByDescending(c => c.PlaceCoefficient).Take(9).ToList();
+                return HospitalItems.OrderByDescending(c => c.PlaceCoefficient).Take(6).ToList();
             }
             private set { }
         }

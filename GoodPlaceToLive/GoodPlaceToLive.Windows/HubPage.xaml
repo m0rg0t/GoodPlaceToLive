@@ -44,6 +44,7 @@
         <Hub SectionHeaderClick="Hub_SectionHeaderClick">
             <Hub.Header>
                 <!-- Back button and page title -->
+                <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="80"/>
@@ -59,8 +60,9 @@
                     <TextBlock x:Name="pageTitle" x:Uid="Header" Text="Где жить хорошо?" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
                 </Grid>
+                </StackPanel>
             </Hub.Header>
-            <HubSection Width="780" Margin="0,0,80,0">
+            <HubSection Width="580" Margin="0,140,80,0">
                 <HubSection.Background>
                     <ImageBrush ImageSource="Assets/hub1.jpg" Stretch="UniformToFill" />
                 </HubSection.Background>

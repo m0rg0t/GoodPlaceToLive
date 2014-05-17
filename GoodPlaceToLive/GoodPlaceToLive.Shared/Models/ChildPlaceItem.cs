@@ -54,6 +54,19 @@ namespace GoodPlaceToLive.Models
             set { _y = value; }
         }
 
+        [IgnoreDataMember]
+        public string Image
+        {
+            private set
+            {
+            }
+            get
+            {
+                string outStr = "http://maps.googleapis.com/maps/api/streetview?size=500x400&location=" + this.Y.Replace(",", ".") + ", " + this.X.Replace(",", ".") + "&fov=180&heading=235&pitch=10&sensor=false";
+                return outStr;
+            }
+        }
+
         private string _telephone;
 
         public string Telephone

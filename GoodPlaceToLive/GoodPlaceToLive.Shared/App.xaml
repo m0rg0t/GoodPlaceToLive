@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:GoodPlaceToLive.ViewModel"
     mc:Ignorable="d"
+    RequestedTheme="Light" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:GoodPlaceToLive">
@@ -13,42 +14,55 @@
                              d:IsDataSource="True" />
 
         <DataTemplate x:Key="Hospital310x260ItemTemplate">
-            <Grid Height="250" Width="310" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+            <Grid Height="400" Width="500" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="150">
+                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="400">
                     <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                </Border>-->
-                <StackPanel Grid.Row="1" Margin="5">
-                    <TextBlock Text="{Binding ShortName}" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap" MaxHeight="170"/>
-                    <TextBlock Text="{Binding Address}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
-                    <TextBlock Text="Сумма контрактов:" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
-                    <TextBlock Text="{Binding ContractSumString}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,5,0,0" MaxHeight="60" />
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
-                        <TextBlock Text="Коэффициент: " Style="{StaticResource BodyTextBlockStyle}"/>
-                        <TextBlock Text="{Binding PlaceCoefficientString}" Style="{StaticResource BodyTextBlockStyle}" Margin="10,0,0,0"/>
+                </Border>
+                <StackPanel Grid.Row="1" Margin="0" Background="#A5323232" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Bottom">
+                    <StackPanel Margin="15">
+                    <TextBlock Text="{Binding ShortName}" Foreground="White"  Style="{StaticResource SubheaderTextBlockStyle}" 
+                               TextWrapping="Wrap"  MaxHeight="170"/>
+                    <TextBlock Text="{Binding Address}" Style="{StaticResource BodyTextBlockStyle}"  
+                               Margin="0,10,0,0" Foreground="White"  MaxHeight="60" />
+                    <TextBlock Text="Сумма контрактов:" 
+                               Foreground="White"
+                               Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
+                    <TextBlock Text="{Binding ContractSumString}"
+                               Foreground="White"
+                               Style="{StaticResource BodyTextBlockStyle}"  Margin="0,5,0,0" MaxHeight="60" />
+                    <StackPanel Margin="0,10,0,0">
+                        <TextBlock Text="Коэффициент: " Foreground="White" Style="{StaticResource BodyTextBlockStyle}"/>
+                        <TextBlock Text="{Binding PlaceCoefficientString}"
+                                   Foreground="White" Style="{StaticResource BodyTextBlockStyle}"/>
+                    </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="ChildPlaces310x260ItemTemplate">
-            <Grid Height="250" Width="310" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+            <Grid Height="400" Width="500" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="150">
+                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="400">
                     <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                </Border>-->
-                <StackPanel Grid.Row="0" Margin="5">
-                    <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap" MaxHeight="130"/>
-                    <TextBlock Text="{Binding Address}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
-                    <TextBlock Text="Сумма контрактов:" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
-                    <TextBlock Text="{Binding ContractSumString}" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,5,0,0" MaxHeight="60" />
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
-                        <TextBlock Text="Коэффициент: " Style="{StaticResource BodyTextBlockStyle}"/>
-                        <TextBlock Text="{Binding PlaceCoefficientString}" Style="{StaticResource BodyTextBlockStyle}" Margin="10,0,0,0"/>
+                </Border>
+                <StackPanel Grid.Row="0" Margin="0" VerticalAlignment="Bottom" Background="#A5323232">
+                    <StackPanel Margin="15">
+                    <TextBlock Text="{Binding Name}" Foreground="White" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap" MaxHeight="130"/>
+                    <TextBlock Text="{Binding Address}" Foreground="White" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
+                    <TextBlock Text="Сумма контрактов:" Foreground="White" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,10,0,0" MaxHeight="60" />
+                    <TextBlock Text="{Binding ContractSumString}" Foreground="White" Style="{StaticResource BodyTextBlockStyle}"  Margin="0,5,0,0" MaxHeight="60" />
+                        <StackPanel Margin="0,10,0,0" >
+                        <TextBlock Text="Коэффициент: " Foreground="White" Style="{StaticResource BodyTextBlockStyle}"/>
+                        <TextBlock Text="{Binding PlaceCoefficientString}"
+                                   Foreground="White"  Style="{StaticResource BodyTextBlockStyle}" Margin="10,0,0,0"/>
+                    </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </Grid>
