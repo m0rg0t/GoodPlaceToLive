@@ -1,4 +1,5 @@
-﻿using GoodPlaceToLive.Common;
+﻿using Windows.UI.Popups;
+using GoodPlaceToLive.Common;
 using GoodPlaceToLive.Data;
 
 using System;
@@ -166,6 +167,53 @@ namespace GoodPlaceToLive
             rmain.CurrentChildItem = item;
             Frame.Navigate(typeof (ChildPlacePage));
 
+        }
+
+        private MainViewModel _rmain;
+
+        private async void LayoutRoot_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+
+                StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                statusBar.ShowAsync();
+                statusBar.ProgressIndicator.ShowAsync();
+
+                _rmain.onLoaded += _rmain_onLoaded;
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void _rmain_onLoaded(object sender, EventArgs e)
+        {
+            StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+            if (_rmain.Loading == false)
+            {
+                statusBar.HideAsync();
+                statusBar.ProgressIndicator.HideAsync();
+            }
+            else
+            {
+                statusBar.ShowAsync();
+                statusBar.ProgressIndicator.ShowAsync();
+
+            }
+        }
+
+        private void HospitalsTile_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                Frame.Navigate(typeof(ChildPlacePage));
+            }
+            catch { }
         }
     }
 }

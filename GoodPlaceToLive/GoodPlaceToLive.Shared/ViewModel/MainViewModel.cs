@@ -24,10 +24,14 @@ namespace GoodPlaceToLive.ViewModel
 
         public async void LoadData()
         {
+            this.Loading = true;
+
             Items = new ObservableCollection<BasePlaceItem>();
             await LoadHospitalsData();
             await LoadChildPlacesData();
             await GetNearestItems();
+
+            this.Loading = false;
         }
 
         private ObservableCollection<HospitalAdultItem> _hospitalItems = new ObservableCollection<HospitalAdultItem>();
@@ -173,8 +177,6 @@ namespace GoodPlaceToLive.ViewModel
                 RaisePropertyChanged("CurrentChildItem");
             }
         }
-        
-        
 
         private bool _loading = false;
         /// <summary>
@@ -186,9 +188,20 @@ namespace GoodPlaceToLive.ViewModel
             set
             {
                 _loading = value;
+                OnLoadedChanged(null);
                 RaisePropertyChanged("Loading");
             }
         }
+
+        protected virtual void OnLoadedChanged(EventArgs e)
+        {
+            EventHandler handler = onLoaded;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+        public event EventHandler onLoaded;
 
         private double _CurrentCoefficient = 0;
         /// <summary>

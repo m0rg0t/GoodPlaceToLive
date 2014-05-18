@@ -5,10 +5,14 @@
     xmlns:local="using:GoodPlaceToLive"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
-    d:DataContext="{Binding Source={d:DesignData Source=../GoodPlaceToLive.Shared/DataModel/SampleData.json, Type=data:SampleDataSource}}"
     xmlns:data="using:GoodPlaceToLive.Data"
+    Background="White"
+    DataContext="{Binding Main, Source={StaticResource Locator}}" 
     mc:Ignorable="d">
+
+    <!--<shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="true" IsVisible="{Binding Loading}" Text="загрузка" />
+    </shell:SystemTray.ProgressIndicator>-->
 
     <Page.Resources>
         <ResourceDictionary>
@@ -22,7 +26,7 @@
             </ResourceDictionary.ThemeDictionaries>
 
             <!-- Grid-appropriate item template as seen in section 2 -->
-            <DataTemplate x:Key="Standard200x180TileItemTemplate">
+            <DataTemplate x:Key="Standard200X180TileItemTemplate">
                 <Grid Width="180">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -88,53 +92,90 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" 
+          Background="White"
+          Loaded="LayoutRoot_Loaded">
         <Hub x:Name="Hub" x:Uid="Hub" Header="Гдe жить хорошо?">
-            <!--Background="{ThemeResource HubBackgroundImageBrush}"-->
-            <!--<HubSection x:Uid="HubSection1" Header="SECTION 1" DataContext="{Binding Groups}">
+            <HubSection Width="440"
+                        Header="Меню">
                 <DataTemplate>
-                    <ListView
-                        ItemsSource="{Binding}"
-                        IsItemClickEnabled="True"
-                        ItemClick="GroupSection_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DataTemplate>
-            </HubSection>-->
+                    <StackPanel 
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                    <StackPanel Margin="0,0,10,0">
+                        <Border Width="150" Name="HospitalsTile"
+                                Background="Red"
+                                Height="150" Tapped="HospitalsTile_Tapped">
+                            <TextBlock 
+                                Margin="10"
+                                Foreground="White"
+                                FontSize="26"
+                                TextWrapping="Wrap"
+                                Text="Больницы"> 
+                            </TextBlock>
+                        </Border>
 
-            <!--<HubSection Visibility="Collapsed" x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
-                         DataContext="{Binding Groups[0]}">
-                <DataTemplate>
-                    <GridView
-                        ItemsSource="{Binding Items}"
-                        AutomationProperties.AutomationId="ItemGridView"
-                        AutomationProperties.Name="Items In Group"
-                        ItemTemplate="{StaticResource Standard200x180TileItemTemplate}"
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemClick="ItemView_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
-                </DataTemplate>
-            </HubSection>-->
+                            <Border Width="150"
+                                Background="Red"
+                                Height="150" 
+                                    Margin="0,10,0,0">
+                                <TextBlock 
+                                Margin="10"
+                                Foreground="White"
+                                FontSize="26"
+                                TextWrapping="Wrap"
+                                Text="Поиск">
+                                </TextBlock>
+                            </Border>
 
-            <HubSection Width="400" x:Uid="HubHospitalSection" Header="Больницы">
+                            <Border Width="150"
+                                Background="Red"
+                                Height="150" Margin="0,10,0,0">
+                                <TextBlock 
+                                Margin="10"
+                                Foreground="White"
+                                FontSize="26"
+                                TextWrapping="Wrap"
+                                Text="О программе">
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel>
+                            <Border Width="150"
+                                Background="Red"
+                                Height="150">
+                                <TextBlock 
+                                Margin="10"
+                                Foreground="White"
+                                FontSize="26"
+                                TextWrapping="Wrap"
+                                Text="Детские сады">
+                                </TextBlock>
+                            </Border>
+
+                            <Border Width="150"
+                                Background="Red"
+                                Height="150" Margin="0,10,0,0">
+                                <TextBlock 
+                                Margin="10"
+                                Foreground="White"
+                                FontSize="26"
+                                TextWrapping="Wrap"
+                                Text="Карта">
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </HubSection>
+            <HubSection Width="440"
+                        x:Uid="HubHospitalSection" 
+                        Header="Больницы">
                 <DataTemplate>
                     <ListView 
-                        AutomationProperties.AutomationId="ItemListViewSection3"
-                        AutomationProperties.Name="Items In Group"
+                        AutomationProperties.AutomationId="BestHospitalItems"
+                        AutomationProperties.Name="BestHospitalItems"
                         SelectionMode="None"
                         IsItemClickEnabled="True"
                         ItemsSource="{Binding BestHospitalItems}"
@@ -146,11 +187,13 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Width="400"  x:Uid="HubChildrenSection" Header="Детские сады">
+            <HubSection Width="440"
+                        x:Uid="HubChildrenSection" 
+                        Header="Детские сады">
                 <DataTemplate>
                     <ListView 
-                        AutomationProperties.AutomationId="ItemListViewSection3"
-                        AutomationProperties.Name="Items In Group"
+                        AutomationProperties.AutomationId="BestChildPlaceItems"
+                        AutomationProperties.Name="BestChildPlaceItems"
                         SelectionMode="None"
                         IsItemClickEnabled="True"
                         ItemsSource="{Binding BestChildPlaceItems}"
@@ -162,45 +205,6 @@
                     </ListView>
                 </DataTemplate>
             </HubSection>
-            
-            <!--<HubSection x:Uid="HubSection4" Header="SECTION 4"
-                        DataContext="{Binding Groups[2]}">
-                <DataTemplate>
-                    <ListView 
-                        AutomationProperties.AutomationId="ItemListViewSection4"
-                        AutomationProperties.Name="Items In Group"
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemsSource="{Binding Items}"
-                        ItemClick="ItemView_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                                    <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DataTemplate>
-            </HubSection>-->
-
-            <!--<HubSection x:Uid="HubSection5" Header="SECTION 5"
-                        DataContext="{Binding Groups[3]}">
-                <DataTemplate>
-                    <ListView 
-                        AutomationProperties.AutomationId="ItemListViewSection5"
-                        AutomationProperties.Name="Items In Group"
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemsSource="{Binding Items}"
-                        ItemTemplate="{StaticResource StandardDoubleLineItemTemplate}"
-                        ItemClick="ItemView_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                    </ListView>
-                </DataTemplate>
-            </HubSection>-->
         </Hub>
     </Grid>
 </Page>
