@@ -13,6 +13,41 @@
         <vm:ViewModelLocator x:Key="Locator"
                              d:IsDataSource="True" />
 
+
+        <DataTemplate x:Key="HospitalItemTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
+                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="99" Width="99"/>
+                    </Border>-->
+                <StackPanel Grid.Column="0" Margin="12,0,0,0">
+                    <TextBlock Text="{Binding ShortName}" TextWrapping="Wrap" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                    <TextBlock Text="{Binding Address}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                    <!--<TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>-->
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChildItemTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
+                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="99" Width="99"/>
+                    </Border>-->
+                <StackPanel Grid.Column="0" Margin="12,0,0,0">
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                    <TextBlock Text="{Binding Address}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                    <!--<TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>-->
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
         <DataTemplate x:Key="Hospital310x260ItemTemplate">
             <Grid Height="400" Width="500" Margin="5,10,5,10" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
                 <Grid.RowDefinitions>

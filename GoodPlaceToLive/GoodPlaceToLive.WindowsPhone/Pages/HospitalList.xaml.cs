@@ -17,6 +17,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
+using GoodPlaceToLive.Models;
+using GoodPlaceToLive.ViewModel;
+using Microsoft.Practices.ServiceLocation;
 
 namespace GoodPlaceToLive.Pages
 {
@@ -43,6 +46,14 @@ namespace GoodPlaceToLive.Pages
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
+        }
+
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = ((HospitalAdultItem)e.ClickedItem);
+            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+            rmain.CurrentItem = item;
+            Frame.Navigate(typeof(HospitalDetailPage));
         }
 
         /// <summary>

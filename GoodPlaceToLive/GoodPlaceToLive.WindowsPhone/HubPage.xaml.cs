@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Popups;
 using GoodPlaceToLive.Common;
+using GoodPlaceToLive.Controls;
 using GoodPlaceToLive.Data;
 
 using System;
@@ -122,11 +123,6 @@ namespace GoodPlaceToLive
         /// <param name="e">Значения по умолчанию для события щелчка.</param>
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            /*var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(ItemPage), itemId))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }*/
             var item = ((HospitalAdultItem)e.ClickedItem);
             var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
             rmain.CurrentItem = item;
@@ -166,7 +162,6 @@ namespace GoodPlaceToLive
             var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
             rmain.CurrentChildItem = item;
             Frame.Navigate(typeof (ChildPlacePage));
-
         }
 
         private MainViewModel _rmain;
@@ -211,7 +206,39 @@ namespace GoodPlaceToLive
         {
             try
             {
-                Frame.Navigate(typeof(ChildPlacePage));
+                Frame.Navigate(typeof(HospitalList));
+            }
+            catch { }
+        }
+
+        private void Border_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                Frame.Navigate(typeof(ChildPlaceList));
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AboutTile_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                Frame.Navigate(typeof(AboutPage));
+            }
+            catch { }
+        }
+
+        private void MapTile_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            try
+            {
+                Frame.Navigate(typeof(MapPage));
             }
             catch { }
         }

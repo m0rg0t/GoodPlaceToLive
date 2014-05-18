@@ -39,40 +39,6 @@
                 </Grid>
             </DataTemplate>
 
-            <DataTemplate x:Key="HospitalItemTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
-                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="99" Width="99"/>
-                    </Border>-->
-                    <StackPanel Grid.Column="0" Margin="12,0,0,0">
-                        <TextBlock Text="{Binding ShortName}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                        <TextBlock Text="{Binding Address}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
-                        <!--<TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>-->
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-
-            <DataTemplate x:Key="ChildItemTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!--<Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Height="99" Width="99" Grid.Column="0" HorizontalAlignment="Left">
-                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="99" Width="99"/>
-                    </Border>-->
-                    <StackPanel Grid.Column="0" Margin="12,0,0,0">
-                        <TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                        <TextBlock Text="{Binding Address}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
-                        <!--<TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>-->
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-
             <DataTemplate x:Key="StandardDoubleLineItemTemplate">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -96,7 +62,7 @@
           Background="White"
           Loaded="LayoutRoot_Loaded">
         <Hub x:Name="Hub" x:Uid="Hub" Header="Гдe жить хорошо?">
-            <HubSection Width="440"
+            <HubSection Width="Auto"
                         Header="Меню">
                 <DataTemplate>
                     <StackPanel 
@@ -110,7 +76,7 @@
                             <TextBlock 
                                 Margin="10"
                                 Foreground="White"
-                                FontSize="26"
+                                FontSize="24"
                                 TextWrapping="Wrap"
                                 Text="Больницы"> 
                             </TextBlock>
@@ -118,12 +84,14 @@
 
                             <Border Width="150"
                                 Background="Red"
-                                Height="150" 
+                                Height="150"
+                                    Visibility="Collapsed"
+                                    Name="SearchTile"
                                     Margin="0,10,0,0">
                                 <TextBlock 
                                 Margin="10"
                                 Foreground="White"
-                                FontSize="26"
+                                FontSize="24"
                                 TextWrapping="Wrap"
                                 Text="Поиск">
                                 </TextBlock>
@@ -131,11 +99,12 @@
 
                             <Border Width="150"
                                 Background="Red"
-                                Height="150" Margin="0,10,0,0">
+                                    Name="AboutTile"
+                                Height="150" Margin="0,10,0,0" Tapped="AboutTile_Tapped">
                                 <TextBlock 
                                 Margin="10"
                                 Foreground="White"
-                                FontSize="26"
+                                FontSize="24"
                                 TextWrapping="Wrap"
                                 Text="О программе">
                                 </TextBlock>
@@ -144,11 +113,12 @@
                         <StackPanel>
                             <Border Width="150"
                                 Background="Red"
-                                Height="150">
+                                    Name="ChildPlaceTile"
+                                Height="150" Tapped="Border_Tapped">
                                 <TextBlock 
                                 Margin="10"
                                 Foreground="White"
-                                FontSize="26"
+                                FontSize="24"
                                 TextWrapping="Wrap"
                                 Text="Детские сады">
                                 </TextBlock>
@@ -156,11 +126,13 @@
 
                             <Border Width="150"
                                 Background="Red"
-                                Height="150" Margin="0,10,0,0">
+                                    Visibility="Collapsed"
+                                    Name="MapTile"
+                                Height="150" Margin="0,10,0,0" Tapped="MapTile_Tapped">
                                 <TextBlock 
                                 Margin="10"
                                 Foreground="White"
-                                FontSize="26"
+                                FontSize="24"
                                 TextWrapping="Wrap"
                                 Text="Карта">
                                 </TextBlock>
@@ -169,7 +141,7 @@
                     </StackPanel>
                 </DataTemplate>
             </HubSection>
-            <HubSection Width="440"
+            <HubSection Width="Auto" MaxWidth="440"
                         x:Uid="HubHospitalSection" 
                         Header="Больницы">
                 <DataTemplate>
@@ -187,7 +159,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Width="440"
+            <HubSection Width="Auto" MaxWidth="800"
                         x:Uid="HubChildrenSection" 
                         Header="Детские сады">
                 <DataTemplate>

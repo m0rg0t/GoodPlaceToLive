@@ -17,21 +17,18 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
-using GoodPlaceToLive.Models;
-using GoodPlaceToLive.ViewModel;
-using Microsoft.Practices.ServiceLocation;
 
 namespace GoodPlaceToLive.Pages
 {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class ChildPlaceList : Page
+    public sealed partial class MapPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public ChildPlaceList()
+        public MapPage()
         {
             this.InitializeComponent();
 
@@ -55,15 +52,6 @@ namespace GoodPlaceToLive.Pages
         public ObservableDictionary DefaultViewModel
         {
             get { return this.defaultViewModel; }
-        }
-
-        private void ChildList_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            //throw new NotImplementedException();
-            var item = ((ChildPlaceItem)e.ClickedItem);
-            var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
-            rmain.CurrentChildItem = item;
-            Frame.Navigate(typeof(ChildPlacePage));
         }
 
         /// <summary>

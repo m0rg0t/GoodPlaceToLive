@@ -29,7 +29,17 @@
 
         <!--TODO: Содержимое должно размещаться в следующей сетке-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
+            <ListView 
+                        AutomationProperties.AutomationId="BestHospitalItems"
+                        AutomationProperties.Name="BestHospitalItems"
+                        SelectionMode="None"
+                        IsItemClickEnabled="True"
+                        ItemsSource="{Binding HospitalItems}"
+                        ItemTemplate="{StaticResource HospitalItemTemplate}"
+                        ContinuumNavigationTransitionInfo.ExitElementContainer="True" 
+                        DataContext="{Binding Main, Source={StaticResource Locator}}" 
+                AllowDrop="True">
+            </ListView>
         </Grid>
     </Grid>
 </Page>
