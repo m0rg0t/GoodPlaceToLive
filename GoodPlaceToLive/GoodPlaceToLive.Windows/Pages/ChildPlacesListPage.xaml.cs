@@ -124,21 +124,30 @@ namespace GoodPlaceToLive.Pages
 
             var map = ((Map) sender);
 
-            _geolocator = new Geolocator();
-            Geoposition pos = await _geolocator.GetGeopositionAsync();
-            Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
-            var zoomLevel = 10;
-            map.SetView(mylocation, zoomLevel);
+            try
+            {
+                _geolocator = new Geolocator();
+                Geoposition pos = await _geolocator.GetGeopositionAsync();
+                Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude,
+                    pos.Coordinate.Point.Position.Longitude);
+                var zoomLevel = 10;
+                map.SetView(mylocation, zoomLevel);
+            }
+            catch { }
 
             var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
             foreach (ChildPlaceItem item in rmain.ChildPlaceItems)
             {
-                Pushpin pushpin = new Pushpin();
-                var location = new Location(Double.Parse(item.Y), Double.Parse(item.X));
-                MapLayer.SetPosition(pushpin, location);
-                pushpin.Name = item.Id.ToString();
-                pushpin.Tapped += pushpinTapped;
-                map.Children.Add(pushpin);
+                try
+                {
+                    Pushpin pushpin = new Pushpin();
+                    var location = new Location(Double.Parse(item.Y), Double.Parse(item.X));
+                    MapLayer.SetPosition(pushpin, location);
+                    pushpin.Name = item.Id.ToString();
+                    pushpin.Tapped += pushpinTapped;
+                    map.Children.Add(pushpin);
+                }
+                catch { }
             };
         }
 
