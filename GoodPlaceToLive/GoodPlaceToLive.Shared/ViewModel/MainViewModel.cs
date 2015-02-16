@@ -5,6 +5,7 @@ using Windows.Devices.Geolocation;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using Callisto.Controls;
 using GoodPlaceToLive.Models;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -29,6 +30,7 @@ namespace GoodPlaceToLive.ViewModel
             Items = new ObservableCollection<BasePlaceItem>();
             await LoadHospitalsData();
             await LoadChildPlacesData();
+            await LoadMinFinData();
             await GetNearestItems();
 
             this.Loading = false;
@@ -167,7 +169,6 @@ namespace GoodPlaceToLive.ViewModel
         }
 
         private ChildPlaceItem _currentChildItem = new ChildPlaceItem();
-
         public ChildPlaceItem CurrentChildItem
         {
             get { return _currentChildItem; }
@@ -177,6 +178,21 @@ namespace GoodPlaceToLive.ViewModel
                 RaisePropertyChanged("CurrentChildItem");
             }
         }
+
+        private MinFinItem _currentMinFinItem = new MinFinItem();
+        /// <summary>
+        /// 
+        /// </summary>
+        public MinFinItem CurrentMinFinItem
+        {
+            get { return _currentMinFinItem; }
+            set
+            {
+                _currentMinFinItem = value;
+                RaisePropertyChanged("CurrentMinFinItem");
+            }
+        }
+        
 
         private bool _loading = false;
         /// <summary>
@@ -326,6 +342,28 @@ namespace GoodPlaceToLive.ViewModel
             }
         }
 
+        private ObservableCollection<MinFinItem> _minFinItems = new ObservableCollection<MinFinItem>();
+
+        public ObservableCollection<MinFinItem> MinFinItems
+        {
+            get { return _minFinItems; }
+            set
+            {
+                _minFinItems = value;
+                RaisePropertyChanged("MinFinItems");
+            }
+        }
+
+        public List<MinFinItem> BestMinFinItems
+        {
+            get
+            {
+                return MinFinItems.OrderByDescending(c => c.PlaceCoefficient).Take(9).ToList();
+            }
+            private set { }
+        }
+        
+
         public List<ChildPlaceItem> BestChildPlaceItems
         {
             get
@@ -337,6 +375,49 @@ namespace GoodPlaceToLive.ViewModel
 
         private MobileServiceCollection<ChildPlaceItem, ChildPlaceItem> ChildPlacesItems;
         private IMobileServiceTable<ChildPlaceItem> ChildPlacesTable = App.MobileService.GetTable<ChildPlaceItem>();
+
+        private MobileServiceCollection<MinFinItem, MinFinItem> minFinItems;
+        private IMobileServiceTable<MinFinItem> MinFinTable = App.MobileService.GetTable<MinFinItem>();
+
+        public async Task<bool> LoadMinFinData()
+        {
+            this.Loading = true;
+            try
+            {
+                MinFinItems = await MinFinTable.ToCollectionAsync(999);
+                try
+                {
+                    Geolocator _geolocator = new Geolocator();
+                    Geoposition pos = await _geolocator.GetGeopositionAsync();
+                    Geocoordinate posGeo = pos.Coordinate;
+
+                    //MyCoordinate = pos;
+                    Longitude = pos.Coordinate.Longitude;
+                    Latitude = pos.Coordinate.Latitude;
+                }
+                catch
+                {
+                }
+                //MinFinItems = new ObservableCollection<MinFinItem>();
+                //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+                foreach (var item in MinFinItems)
+                {
+                    item.Latitude = Double.Parse(item.Y.Replace(".",","));
+                    item.Longitude = Double.Parse(item.X.Replace(".", ","));
+                    Items.Add(item);
+
+                    item.CalculateDistance(Latitude, Longitude);
+                    //MinFinItems.Add(item);
+                }
+            }
+            catch
+            {
+            }
+            RaisePropertyChanged("MinFinItems");
+            RaisePropertyChanged("BestMinFinItems");
+            this.Loading = false;
+            return true;
+        }
 
         public async Task<bool> LoadChildPlacesData()
         {
@@ -357,7 +438,7 @@ namespace GoodPlaceToLive.ViewModel
                 catch
                 {
                 }
-                ChildPlaceItems = new ObservableCollection<ChildPlaceItem>();
+                //ChildPlaceItems = new ObservableCollection<ChildPlaceItem>();
                 //Location mylocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
                 foreach (var item in ChildPlacesItems)
                 {

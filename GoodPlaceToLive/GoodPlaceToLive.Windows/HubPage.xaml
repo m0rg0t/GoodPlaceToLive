@@ -132,6 +132,27 @@
                     </Grid>
                 </DataTemplate>
             </HubSection>
+
+            <HubSection x:Uid="HubMostFoundedMinFinSection" Header="Организации в ведении Минфина России" Name="MinFinPlaces" IsHeaderInteractive="True">
+                <DataTemplate>
+                    <Grid>
+                        <GridView
+                            x:Name="itemMinFinPlacesGridView"
+                            ItemsSource="{Binding BestMinFinItems}"
+                            DataContext="{Binding Main, Source={StaticResource Locator}}"
+                            Margin="-9,-14,0,0"
+                            AutomationProperties.AutomationId="ItemGridView"
+                            AutomationProperties.Name="Items In Group"
+                            ItemTemplate="{StaticResource MinFinPlaces310x260ItemTemplate}"
+                            SelectionMode="None"
+                            IsSwipeEnabled="false"
+                            IsItemClickEnabled="True"
+                            ItemClick="ItemMinFinPlacesGridView_OnItemClick">
+                        </GridView>
+                    </Grid>
+                </DataTemplate>
+            </HubSection>
+
             <HubSection Width="520" x:Uid="Section2Header" Header="Section 2" Visibility="Collapsed">
                 <DataTemplate>
                     <Grid>

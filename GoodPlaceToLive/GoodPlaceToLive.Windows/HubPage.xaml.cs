@@ -46,6 +46,9 @@ namespace GoodPlaceToLive
         private MobileServiceCollection<ChildPlaceItem, ChildPlaceItem> childItems;
         private IMobileServiceTable<ChildPlaceItem> ChildTable = App.MobileService.GetTable<ChildPlaceItem>();
 
+        private MobileServiceCollection<MinFinItem, MinFinItem> minFinItems;
+        private IMobileServiceTable<MinFinItem> MinFinTable = App.MobileService.GetTable<MinFinItem>();
+
         /// <summary>
         /// Получает NavigationHelper, используемый для облегчения навигации и управления жизненным циклом процессов.
         /// </summary>
@@ -138,15 +141,28 @@ namespace GoodPlaceToLive
             //throw new NotImplementedException();
         }
 
-        public async void LoadCSV()
+        /*public async void LoadCSV()
         {
-            /*HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             string earthQuakeData = await client.GetStringAsync("http://goodplacetolive.azurewebsites.net/child.txt");
             var results = JsonConvert.DeserializeObject<ObservableCollection<ChildPlaceItem>>(earthQuakeData.ToString());
             foreach (var item in results)
             {
                 await item.LoadCustomerData();
                 await ChildTable.InsertAsync(item);
+            }
+            Debug.WriteLine("Import finished");
+        }*/
+
+        public async void LoadCSV()
+        {
+            /*HttpClient client = new HttpClient();
+            string earthQuakeData = await client.GetStringAsync("http://goodplacetolive.azurewebsites.net/minfin.txt");
+            var results = JsonConvert.DeserializeObject<ObservableCollection<MinFinItem>>(earthQuakeData.ToString());
+            foreach (var item in results)
+            {
+                await item.LoadCustomerData();
+                await MinFinTable.InsertAsync(item);
             }*/
             Debug.WriteLine("Import finished");
         }
@@ -263,6 +279,20 @@ namespace GoodPlaceToLive
                 var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
                 rmain.CurrentChildItem = item;
                 this.Frame.Navigate(typeof(ChildPlacesDetailPage));
+            }
+            catch
+            {
+            }
+        }
+
+        private void ItemMinFinPlacesGridView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            try
+            {
+                var item = ((MinFinItem)e.ClickedItem);
+                var rmain = ServiceLocator.Current.GetInstance<MainViewModel>();
+                rmain.CurrentMinFinItem = item;
+                //this.Frame.Navigate(typeof(ChildPlacesDetailPage));
             }
             catch
             {

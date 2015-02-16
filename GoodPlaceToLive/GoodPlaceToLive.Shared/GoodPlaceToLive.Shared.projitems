@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\BasePlaceItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ChildPlaceItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\HospitalAdultItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\MinFinItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParserEngines\BasicParserEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ParserEngines\BetterParserEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\MainViewModel.cs" />
