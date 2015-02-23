@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="43337m0rg0t.15207CC4444E4" Publisher="CN=F7642D27-CCE9-4988-9BED-35B1F14EED65" Version="1.2.0.7" />
+  <Identity Name="43337m0rg0t.15207CC4444E4" Publisher="CN=F7642D27-CCE9-4988-9BED-35B1F14EED65" Version="1.3.0.8" />
   <Properties>
     <DisplayName>Где жить хорошо?</DisplayName>
     <PublisherDisplayName>m0rg0t</PublisherDisplayName>
