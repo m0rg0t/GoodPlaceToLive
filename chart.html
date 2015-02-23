@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Chart</title>
+
+        <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"/>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.3.min.js"></script>
+    <script>
+            var client = new WindowsAzure.MobileServiceClient(
+                "https://goodplacetolive.azure-mobile.net/",
+                "nlCsTQnlhqUbIShsbuNFzAWdxCWBnA13"
+            );
+    </script>
+    <script>
+        $(document).ready(function () {
+        var diameter = 960,
+                format = d3.format(",d"),
+                color = d3.scale.category20c();
+
+        var bubble = d3.layout.pack()
+                .sort(null)
+                .size([diameter, diameter])
+                .padding(1.5);
+
+        var svg = d3.select("body").append("svg")
+                .attr("width", diameter)
+                .attr("height", diameter)
+                .attr("class", "bubble");
+
+        hospitalItemTable = client.getTable('HospitalAdultItem');
+
+        hospitalItemTable.read().then(function (hospitalItems) {
+            listItems = $.map(hospitalItems, function (item) {
+                console.log(item);
+
+                var node = svg.selectAll(".node")
+                .data(item)
+                .enter().append("g")
+                .attr("class", "node")
+                .attr("transform", function (d) { return "translate(" + d.X + "," + d.Y + ")"; });
+
+                node.append("title")
+                .text(function (d) { return d.FullName; });
+
+                node.append("circle")
+                .attr("r", function (d) { return d.ContractCount; })
+                .style("fill", function (d) { return color("red"); });
+
+                node.append("text")
+                .attr("dy", ".3em")
+                .style("text-anchor", "middle")
+                .text(function (d) { return d.className.substring(0, d.ContractCount / 3); });
+            });
+        });
+
+
+        // Returns a flattened hierarchy containing all leaf nodes under the root.
+        function classes(root) {
+            var classes = [];
+
+            function recurse(name, node) {
+                if (node.children) node.children.forEach(function (child) { recurse(node.name, child); });
+                else classes.push({ packageName: name, className: node.name, value: node.size });
+            }
+
+            recurse(null, root);
+            return { children: classes };
+        }
+
+        d3.select(self.frameElement).style("height", diameter + "px");
+        });
+    </script>
+    </head>
+    <body>
+        
+    </body>
+</html>
