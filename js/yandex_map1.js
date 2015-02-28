@@ -2,15 +2,57 @@
     var myMap;
 
     var dataControl = {
+        //https://api.foursquare.com/v2/venues/explore?ll=37.794354,56.00793&client_id=5AD112QB4J1IYH30KTIJ3ZY5HFWI4Z4TA5JHGDDJU1ZV4C1H&client_secret=KEA2JSNL3315JH4ZUY3XKD3F5C3G2OZGOSFOMD5RW30XAZST&v=20150228
+        foursquare: {
+            client_id: "5AD112QB4J1IYH30KTIJ3ZY5HFWI4Z4TA5JHGDDJU1ZV4C1H",
+            client_secret: "KEA2JSNL3315JH4ZUY3XKD3F5C3G2OZGOSFOMD5RW30XAZST",
+            getPlaces: function (coordinates) {
+                $.getJSON('https://api.foursquare.com/v2/venues/explore?ll=' + coordinates[0] + ','
+                    + coordinates[1] + "&radius=5000&limit=100" +
+                    '&client_id=' + dataControl.foursquare.client_id
+                    + '&client_secret=' + dataControl.foursquare.client_secret + '&v=20150202', {}, function (data) {
+                        try {
+                            var items = data.response.groups[0].items;
+                            console.log(items);
+
+                            for (var i = 0; i < items.length; i++) {
+                                //console.log(items[i]);
+                                var item = items[i].venue;
+                                var address = item.location.address;
+                                if (address == undefined) {
+                                    address = "Не указан";
+                                }
+                                var rating = item.rating;
+                                if (rating == undefined) {
+                                    rating = "Не указан";
+                                }
+
+                                var myPlacemark = new ymaps.Placemark([item.location.lat, item.location.lng], {
+                                    hintContent: item.name,
+                                    balloonContent: "<strong>" + item.name + "</strong></br>" +
+                                        address + "</br>" +
+                                        "Рейтинг: " + rating + "</br>" +
+                                        ""
+                                }, {
+                                    preset: "islands#grayCircleDotIcon"
+                                });
+                                //console.log(myPlacemark);
+                                myMap.geoObjects.add(myPlacemark);
+                            }
+                        } catch (ex) {
+                            console.log(ex);
+                        }
+                    });
+            }
+        },
         //http://tts.voicetech.yandex.net/generate?text=%22%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%20%D0%BC%D0%B8%D1%80%22&format=mp3&emotion=good&lang=ru-RU&speaker=jane&key=c88bd5f0-c337-4b83-b2d0-b6e492cdd58c
-            speech: {
-                speechKey: "c88bd5f0-c337-4b83-b2d0-b6e492cdd58c",
-                getSpeechLink: function (text) {
-                    return "http://tts.voicetech.yandex.net/generate?text="+text+"&format=mp3&emotion=good&lang=ru-RU&speaker=jane&key=" + dataControl.speech.speechKey;
-                }
-            },
+        speech: {
+            speechKey: "c88bd5f0-c337-4b83-b2d0-b6e492cdd58c",
+            getSpeechLink: function (text) {
+                return "http://tts.voicetech.yandex.net/generate?text=" + text + "&format=mp3&emotion=good&lang=ru-RU&speaker=jane&key=" + dataControl.speech.speechKey;
+            }
+        },
         loading: {
-            
             maxLoadingCount: 3,
             loadingCount: 0,
             startLoading: function () {
@@ -66,6 +108,8 @@
                     radius: 5000
                 }
             });
+            dataControl.foursquare.getPlaces([coords[0], coords[1]]);
+
             console.log(dataControl.currentArea);
             //dataControl.currentArea.add('click', f);
             myMap.geoObjects.add(dataControl.currentArea);
@@ -103,9 +147,9 @@
                         var position = [item.Y.replace(',', '.'), item.X.replace(',', '.')];
                         var myPlacemark = new ymaps.Placemark(position, {
                             hintContent: item.Name,
-                            balloonContent: "<b>" + item.Name + "</b><br/>" + 
+                            balloonContent: "<b>" + item.Name + "</b><br/>" +
                                 item.Address + "<br/>Сумма контрактов - " + Math.round(item.ContractSum) + " руб.<br/>" +
-                                "<audio controls><source src=\""+ dataControl.speech.getSpeechLink(item.Name) +"\" type=\"audio/mpeg\"></audio>"
+                                "<audio controls><source src=\"" + dataControl.speech.getSpeechLink(item.Name) + "\" type=\"audio/mpeg\"></audio>"
                         });
 
                         dataControl.allItems.push({
@@ -144,8 +188,8 @@
 
                     var myPlacemark = new ymaps.Placemark(position, {
                         hintContent: item.FullName,
-                        balloonContent: "<b>" + item.FullName + "</b><br/>" + item.Address + "<br/>Сумма контрактов - " + Math.round(item.ContractSum) + " руб.<br/>"+
-                        "<audio controls><source src=\""+ dataControl.speech.getSpeechLink(item.FullName) +"\" type=\"audio/mpeg\"></audio>"
+                        balloonContent: "<b>" + item.FullName + "</b><br/>" + item.Address + "<br/>Сумма контрактов - " + Math.round(item.ContractSum) + " руб.<br/>" +
+                        "<audio controls><source src=\"" + dataControl.speech.getSpeechLink(item.FullName) + "\" type=\"audio/mpeg\"></audio>"
                     }, {
                         preset: 'islands#darkGreenIcon'
                     });
@@ -183,8 +227,8 @@
 
                     var myPlacemark = new ymaps.Placemark(position, {
                         hintContent: item.Name,
-                        balloonContent: "<b>" + item.Name + "</b><br/>" + item.Address + "<br/>Сумма контрактов - " + Math.round(item.ContractSum) + " руб.<br/>"+
-                        "<audio controls><source src=\""+ dataControl.speech.getSpeechLink(item.Name) +"\" type=\"audio/mpeg\"></audio>"
+                        balloonContent: "<b>" + item.Name + "</b><br/>" + item.Address + "<br/>Сумма контрактов - " + Math.round(item.ContractSum) + " руб.<br/>" +
+                        "<audio controls><source src=\"" + dataControl.speech.getSpeechLink(item.Name) + "\" type=\"audio/mpeg\"></audio>"
                     }, {
                         preset: 'islands#redIcon'
                     });
