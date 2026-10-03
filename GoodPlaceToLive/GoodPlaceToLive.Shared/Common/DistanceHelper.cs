@@ -42,4 +42,3 @@ private static double rad2deg(double rad) {
 
     }
 }
-
