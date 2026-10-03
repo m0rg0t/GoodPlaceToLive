@@ -37,6 +37,8 @@ namespace GoodPlaceToLive.Models
             {
                 _distance = value;
                 RaisePropertyChanged("Distance");
+                RaisePropertyChanged("PlaceCoefficient");
+                RaisePropertyChanged("PlaceCoefficientString");
             }
         }
 
@@ -51,6 +53,7 @@ namespace GoodPlaceToLive.Models
             {
                 _contractSum = value;
                 RaisePropertyChanged("ContractSum");
+                RaisePropertyChanged("ContractSumString");
                 RaisePropertyChanged("PlaceCoefficient");
                 RaisePropertyChanged("PlaceCoefficientString");
             }
